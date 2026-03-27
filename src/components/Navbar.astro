@@ -60,9 +60,7 @@ function isActive(href: string) {
       ))
     }
   </ul>
-  <a href="/contact#inquiry-form" class="nav__cta" data-astro-reload
-    >Inquire Now</a
-  >
+  <a href="/contact#inquiry-form" class="nav__cta">Inquire Now</a>
 </div>
 
 <style>
@@ -176,7 +174,7 @@ function isActive(href: string) {
 
   @media (min-width: 48em) {
     .nav__cta {
-      display: inline-flex;
+      display: inline-block;
       align-items: center;
     }
   }
@@ -287,41 +285,73 @@ function isActive(href: string) {
     display: inline-flex;
     align-items: center;
     margin-top: calc(0.5 * var(--spacing));
+    width: fit-content;
+
+    /* Reset & Force button styles */
+    background-color: var(--clr-primary) !important;
+    color: #fff !important;
+    border: 1px solid var(--clr-primary);
+    font-size: var(--fs-label);
+    padding: 0.75rem 1.75rem;
+    font-style: normal; /* Removes the italic from the general 'a' rule */
+
+    /* Smooth transition for all changing properties */
+    transition:
+      background-color var(--transition-slow),
+      border-color var(--transition-slow),
+      color var(--transition-slow);
+  }
+
+  .nav__mobile .nav__cta:hover {
+    background-color: var(--clr-accent) !important;
+    border-color: var(--clr-accent);
+    color: #fff !important;
   }
 </style>
 
 <script>
-  const nav = document.getElementById("nav")!;
-  const hamburger = document.getElementById("hamburger")!;
-  const mobileMenu = document.getElementById("mobile-menu")!;
+  // This function sets up the listeners
+  const setupNav = () => {
+    const nav = document.getElementById("nav");
+    const hamburger = document.getElementById("hamburger");
+    const mobileMenu = document.getElementById("mobile-menu");
 
-  // --- Scroll: add .scrolled when past nav height ---
-  const onScroll = () => {
-    nav.classList.toggle("scrolled", window.scrollY > 80);
-  };
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll(); // run once on load in case page is already scrolled
+    // Guard clause: if elements aren't found, exit early
+    if (!nav || !hamburger || !mobileMenu) return;
 
-  // --- Hamburger toggle ---
-  hamburger.addEventListener("click", () => {
-    const isOpen = hamburger.getAttribute("aria-expanded") === "true";
-    hamburger.setAttribute("aria-expanded", String(!isOpen));
-    mobileMenu.setAttribute("aria-hidden", String(isOpen));
-  });
+    // --- Scroll logic ---
+    const onScroll = () => {
+      nav.classList.toggle("scrolled", window.scrollY > 80);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
 
-  // --- Close mobile menu on link click ---
-  mobileMenu.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      hamburger.setAttribute("aria-expanded", "false");
-      mobileMenu.setAttribute("aria-hidden", "true");
+    // --- Hamburger toggle ---
+    const toggleMenu = () => {
+      const isOpen = hamburger.getAttribute("aria-expanded") === "true";
+      hamburger.setAttribute("aria-expanded", String(!isOpen));
+      mobileMenu.setAttribute("aria-hidden", String(isOpen));
+    };
+
+    hamburger.addEventListener("click", toggleMenu);
+
+    // --- Close mobile menu on link click ---
+    mobileMenu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        hamburger.setAttribute("aria-expanded", "false");
+        mobileMenu.setAttribute("aria-hidden", "true");
+      });
     });
-  });
 
-  // --- Close on Escape ---
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      hamburger.setAttribute("aria-expanded", "false");
-      mobileMenu.setAttribute("aria-hidden", "true");
-    }
-  });
+    // --- Close on Escape ---
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        hamburger.setAttribute("aria-expanded", "false");
+        mobileMenu.setAttribute("aria-hidden", "true");
+      }
+    });
+  };
+
+  // Run on initial load AND every view transition
+  document.addEventListener("astro:page-load", setupNav);
 </script>
