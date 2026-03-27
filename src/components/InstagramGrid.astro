@@ -1,0 +1,103 @@
+---
+interface Photo {
+  src: string;
+  alt: string;
+}
+
+interface Props {
+  heading?: string;
+  handle?: string;
+  profileUrl?: string;
+  photos: Photo[];
+}
+
+const {
+  heading = "The Journal",
+  handle = "@TheGardenTable",
+  profileUrl = "https://instagram.com",
+  photos,
+} = Astro.props;
+---
+
+<section class="insta">
+  <div class="insta__header container">
+    <h2 class="insta__heading">{heading}</h2>
+    <a
+      href={profileUrl}
+      class="btn-ghost"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Follow {handle}
+    </a>
+  </div>
+
+  <ul class="insta__grid" role="list">
+    {
+      photos.map(({ src, alt }) => (
+        <li class="insta__cell">
+          <img src={src} alt={alt} loading="lazy" />
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .insta {
+    padding-bottom: var(--section-gap);
+  }
+
+  .insta__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--spacing);
+    margin-bottom: calc(2 * var(--spacing));
+  }
+
+  .insta__heading {
+    font-family: var(--ff-heading);
+    font-weight: var(--fw-regular);
+    font-size: var(--fs-h2);
+  }
+
+  .insta__grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+  }
+
+  @media (min-width: 36em) {
+    .insta__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 64em) {
+    .insta__grid {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+
+  .insta__cell {
+    aspect-ratio: 1;
+    overflow: hidden;
+  }
+
+  .insta__cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-slow);
+  }
+
+  .insta__cell:hover img {
+    transform: scale(1.08);
+  }
+</style>

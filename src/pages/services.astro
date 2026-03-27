@@ -1,0 +1,215 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PackagesGrid from "../components/PackagesGrid.astro";
+import ServicesGrid from "../components/ServicesGrid.astro";
+import ProcessSteps from "../components/ProcessSteps.astro";
+import TestimonialStrip from "../components/TestimonialStrip.astro";
+import CtaBanner from "../components/CtaBanner.astro";
+import HeroEditorial from "../components/HeroEditorial.astro";
+import PackagesEditorial from "../components/PackagesEditorial.astro";
+
+const galleryImages = [
+  {
+    src: "https://images.unsplash.com/photo-1519741497674-611481863552?w=900&q=80",
+    alt: "Organic bridal bouquet with garden roses and trailing greenery",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1478146059778-26028b07395a?w=600&q=80",
+    alt: "Soft afternoon light falling on silk table linens",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=900&q=80",
+    alt: "Long communal wedding table at sunset with candles and florals",
+  },
+];
+
+const processSteps = [
+  {
+    number: "01",
+    title: "The Consultation",
+    body: "We begin with a conversation — your story, your aesthetic, the feeling you want to evoke. This is where we align our creative vision with your personal narrative.",
+    image:
+      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80",
+    imageAlt:
+      "Two people in a calm consultation over sketches and fabric swatches",
+  },
+  {
+    number: "02",
+    title: "The Concept",
+    body: "Our team develops a comprehensive design deck: mood boards, floral palettes, structural layouts. We refine every detail until it feels like a natural extension of your style.",
+    image:
+      "https://images.unsplash.com/photo-1523726491678-bf852e717f6a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    imageAlt:
+      "Curated colour palette swatches and fabric samples on a white surface",
+  },
+  {
+    number: "03",
+    title: "The Execution",
+    body: "Our stylists and florists bring the concept to life — procurement, assembly, on-site styling. You simply arrive and be present in the beauty of your day.",
+    image:
+      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80",
+    imageAlt:
+      "Florists arranging a large floral installation at an outdoor venue",
+  },
+];
+
+const packages = [
+  {
+    image: "/images/package-date.jpg",
+    imageAlt: "Intimate picnic setup for two",
+    price: "Starting at $250",
+    title: "Basic Picnic",
+    body: "An intimate alfresco setting designed for connection, featuring soft textiles and seasonal floral accents.",
+    includes: [
+      "2 Hours of Curated Dining",
+      "Artisanal Grazing Board",
+      "Chilled Refreshments",
+    ],
+    featured: false,
+  },
+  {
+    image:
+      "https://plus.unsplash.com/premium_photo-1674197235634-c2c4799d0714?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    imageAlt: "Luxury proposal setup",
+    price: "Starting at $450",
+    title: "Luxury Setup",
+    body: "A masterfully orchestrated scene for life's most significant milestones. Refined, romantic, and camera-ready.",
+    includes: [
+      "Signature Floral Artistry",
+      "Premium Tablescape Design",
+      "Secret Event Coordination",
+    ],
+    featured: true,
+  },
+  {
+    image: "/images/package-group.jpg",
+    imageAlt: "Long table event setup",
+    price: "Starting at $600",
+    title: "Special Event",
+    body: "Elevated group dining for your inner circle. A grand long-table aesthetic for birthdays and bridal celebrations.",
+    includes: [
+      "Seating for 6–12 Guests",
+      "Vintage Plate Styling",
+      "Custom Stationery & Menus",
+    ],
+    featured: false,
+  },
+];
+---
+
+<Layout
+  title="Services"
+  description="Luxury picnic experiences and bespoke wedding styling from The Garden Table."
+>
+  <HeroEditorial
+    label="Picnics & Weddings"
+    heading="Every gathering deserves to be <em>unforgettable.</em>"
+    body="Whether an intimate picnic for two or a grand wedding celebration, we bring the same obsessive attention to detail to every event we touch. Our work is rooted in seasonal beauty, honest materials, and the belief that the best moments happen around a well-set table."
+    image="https://images.unsplash.com/photo-1652169892293-ba174ef19931?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    imageAlt="Elegant outdoor wedding table with organic florals and candlelight"
+    compact={true}
+  />
+
+  <!-- What we do — 3 pillars covering both services -->
+  <ServicesGrid label="What we do" heading="One studio, two specialities" />
+
+  <PackagesEditorial {packages} />
+
+  <!-- Shared process — applies to both picnics and weddings -->
+  <ProcessSteps steps={processSteps} />
+
+  <TestimonialStrip
+    quote="A masterclass in outdoor elegance. Maui Rose transformed a simple sunset into a curated gallery experience. Every detail—from the vintage glassware to the floral artistry—was perfection."
+    author="Mike K."
+    location="Lahaina"
+  />
+
+  <CtaBanner
+    heading="Let's create something <em>timeless</em> together."
+    body="Currently accepting inquiries for the 2025 and 2026 seasons. We take on a limited number of events each year to ensure bespoke attention."
+    buttonLabel="Book a Consultation"
+    buttonHref="/contact"
+    note="Responding to all inquiries within 48 hours"
+  />
+</Layout>
+
+<style>
+  /* Hero */
+  .svc-hero {
+    padding-top: calc(var(--nav-height) + var(--section-gap));
+    padding-bottom: var(--section-gap);
+  }
+
+  .svc-hero__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: calc(4 * var(--spacing));
+    align-items: center;
+  }
+
+  @media (min-width: 48em) {
+    .svc-hero__inner {
+      grid-template-columns: 5fr 4fr;
+    }
+  }
+
+  .svc-hero__text {
+    display: flex;
+    flex-direction: column;
+    gap: calc(1.5 * var(--spacing));
+  }
+
+  .svc-hero__heading {
+    font-family: var(--ff-heading);
+    font-weight: var(--fw-regular);
+    font-size: clamp(2.25rem, 4.5vw, var(--fs-hero));
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--txt-main);
+  }
+
+  .svc-hero__heading em {
+    font-style: italic;
+  }
+
+  .svc-hero__body {
+    font-size: var(--fs-body);
+    color: var(--txt-muted);
+    line-height: 1.7;
+    max-width: 52ch;
+  }
+
+  /* Staggered two-image column */
+  .svc-hero__media {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: calc(1.5 * var(--spacing));
+    align-items: start;
+  }
+
+  .svc-hero__img {
+    overflow: hidden;
+  }
+
+  .svc-hero__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-slow);
+  }
+
+  .svc-hero__img:hover img {
+    transform: scale(1.04);
+  }
+
+  .svc-hero__img--top {
+    aspect-ratio: 3 / 4;
+  }
+
+  /* Push the second image down for a staggered look */
+  .svc-hero__img--bottom {
+    aspect-ratio: 3 / 4;
+    margin-top: calc(3 * var(--spacing));
+  }
+</style>

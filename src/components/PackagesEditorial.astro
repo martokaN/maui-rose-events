@@ -1,0 +1,286 @@
+---
+interface Package {
+  image: string;
+  imageAlt: string;
+  price: string;
+  title: string;
+  body: string;
+  includes: string[];
+  featured?: boolean;
+  href?: string;
+}
+
+interface Props {
+  packages: Package[];
+  label?: string;
+  heading?: string;
+}
+
+const {
+  packages,
+  label = "Curated Packages",
+  heading = "An experience for every occasion",
+} = Astro.props;
+---
+
+<section class="pkg-editorial">
+  <div class="container">
+    <div class="pkg-editorial__header section-header">
+      <h2 class="pkg-editorial__heading">{heading}</h2>
+      <span
+        class="label"
+        style="font-family: var(--ff-heading); font-style: italic;"
+        >{label}</span
+      >
+    </div>
+
+    <ol class="pkg-editorial__list" role="list">
+      {
+        packages.map(
+          (
+            {
+              image,
+              imageAlt,
+              price,
+              title,
+              body,
+              includes,
+              featured,
+              href = "/contact",
+            },
+            i,
+          ) => (
+            <li
+              class:list={[
+                "pkg-editorial__item",
+                { "pkg-editorial__item--featured": featured },
+              ]}
+            >
+              <div class="pkg-editorial__media">
+                <img
+                  src={image}
+                  alt={imageAlt}
+                  loading={i === 0 ? "eager" : "lazy"}
+                />
+                <span class="badge pkg-editorial__price">{price}</span>
+              </div>
+
+              <div class="pkg-editorial__content">
+                <div class="pkg-editorial__meta">
+                  <span class="pkg-editorial__number label" aria-hidden="true">
+                    0{i + 1}
+                  </span>
+                  <span class="pkg-editorial__tag label">
+                    {featured ? "Most Popular" : "\u00A0"}
+                  </span>
+                </div>
+
+                <h3 class="pkg-editorial__title">{title}</h3>
+
+                <p class="pkg-editorial__body">{body}</p>
+
+                <ul class="pkg-editorial__includes" role="list">
+                  {includes.map((item) => (
+                    <li class="pkg-editorial__include">
+                      <span class="pkg-editorial__dash" aria-hidden="true">
+                        —
+                      </span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+
+                <div class="pkg-editorial__footer">
+                  <span class="pkg-editorial__price-inline">{price}</span>
+                  <a
+                    href={href}
+                    class:list={[
+                      "btn",
+                      featured ? "btn-primary" : "btn-outline",
+                    ]}
+                  >
+                    Inquire
+                  </a>
+                </div>
+              </div>
+            </li>
+          ),
+        )
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .pkg-editorial {
+    padding-block: var(--section-gap);
+  }
+
+  .pkg-editorial__heading {
+    font-family: var(--ff-heading);
+    font-weight: var(--fw-regular);
+  }
+
+  .pkg-editorial .section-header {
+    border-bottom: none;
+  }
+
+  /* List */
+  .pkg-editorial__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Each item: full-width row, image + content side by side */
+  .pkg-editorial__item {
+    display: grid;
+    grid-template-columns: 1fr;
+    border-top: 1px solid var(--clr-border);
+    padding-block: calc(4 * var(--spacing));
+    gap: calc(4 * var(--spacing));
+    transition: background-color var(--transition-slow);
+  }
+
+  .pkg-editorial__item:last-child {
+    border-bottom: 1px solid var(--clr-border);
+  }
+
+  @media (min-width: 48em) {
+    .pkg-editorial__item {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+    }
+
+    /* Alternate image side each row */
+    .pkg-editorial__item:nth-child(even) .pkg-editorial__media {
+      order: 2;
+    }
+    .pkg-editorial__item:nth-child(even) .pkg-editorial__content {
+      order: 1;
+    }
+  }
+
+  /* Featured item gets a tinted background */
+  .pkg-editorial__item--featured {
+    background-color: var(--bg-surface);
+    padding-inline: calc(3 * var(--spacing));
+    margin-inline: calc(-3 * var(--spacing));
+  }
+
+  /* Image */
+  .pkg-editorial__media {
+    position: relative;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+  }
+
+  .pkg-editorial__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-slow);
+  }
+
+  .pkg-editorial__item:hover .pkg-editorial__media img {
+    transform: scale(1.04);
+  }
+
+  .pkg-editorial__price {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+  }
+
+  /* Content */
+  .pkg-editorial__content {
+    display: flex;
+    flex-direction: column;
+    gap: calc(1.5 * var(--spacing));
+    padding-inline: calc(2 * var(--spacing));
+  }
+
+  .pkg-editorial__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pkg-editorial__number {
+    color: var(--txt-light);
+    font-size: var(--fs-h2);
+    font-family: var(--ff-heading);
+    font-style: italic;
+    opacity: 0.3;
+    letter-spacing: 0;
+  }
+
+  .pkg-editorial__tag {
+    color: var(--clr-primary);
+  }
+
+  .pkg-editorial__title {
+    font-family: var(--ff-heading);
+    font-style: italic;
+    font-weight: var(--fw-regular);
+    font-size: var(--fs-h1);
+    color: var(--txt-main);
+    line-height: 1.1;
+  }
+
+  .pkg-editorial__body {
+    font-size: var(--fs-body);
+    color: var(--txt-muted);
+    line-height: 1.8;
+    max-width: 48ch;
+  }
+
+  /* Includes list */
+  .pkg-editorial__includes {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    border-top: 1px solid var(--clr-border);
+    padding-top: calc(1.5 * var(--spacing));
+  }
+
+  .pkg-editorial__include {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-size: var(--fs-small);
+    color: var(--txt-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .pkg-editorial__dash {
+    color: var(--clr-primary);
+    flex-shrink: 0;
+    opacity: 0.6;
+  }
+
+  /* Footer row: price + CTA */
+  .pkg-editorial__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing);
+    flex-wrap: wrap;
+    padding-top: calc(1.5 * var(--spacing));
+    border-top: 1px solid var(--clr-border);
+  }
+
+  .pkg-editorial__price-inline {
+    font-family: var(--ff-heading);
+    font-style: italic;
+    font-size: var(--fs-h3);
+    color: var(--txt-main);
+  }
+</style>

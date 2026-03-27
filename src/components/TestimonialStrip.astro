@@ -1,0 +1,64 @@
+---
+interface Props {
+  quote: string;
+  author: string;
+  location?: string;
+}
+
+const { quote, author, location } = Astro.props;
+---
+
+<section class="testimonial">
+  <div class="container testimonial__inner">
+    <span class="testimonial__mark" aria-hidden="true">&ldquo;</span>
+
+    <blockquote class="testimonial__quote">
+      {quote}
+    </blockquote>
+
+    <cite class="testimonial__cite">
+      — {author}{location && `, ${location}`}
+    </cite>
+  </div>
+</section>
+
+<style>
+  .testimonial {
+    padding-block: var(--section-gap);
+  }
+
+  .testimonial__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: calc(1.5 * var(--spacing));
+  }
+
+  .testimonial__mark {
+    font-family: var(--ff-heading);
+    font-size: 5rem;
+    line-height: 1;
+    color: var(--clr-primary);
+    opacity: 0.15;
+    display: block;
+  }
+
+  .testimonial__quote {
+    font-family: var(--ff-heading);
+    font-style: italic;
+    font-weight: var(--fw-regular);
+    font-size: clamp(1.25rem, 3vw, 2.25rem);
+    line-height: 1.4;
+    color: var(--txt-main);
+    max-width: 44ch;
+  }
+
+  .testimonial__cite {
+    font-size: var(--fs-label);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--txt-light);
+    font-style: normal;
+  }
+</style>

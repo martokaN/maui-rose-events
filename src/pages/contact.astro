@@ -1,0 +1,157 @@
+---
+import Layout from "../layouts/Layout.astro";
+import HeroEditorial from "../components/HeroEditorial.astro";
+import ContactForm from "../components/ContactForm.astro";
+import FaqAccordion from "../components/FaqAccordion.astro";
+
+const faqItems = [
+  {
+    question: "Do you travel for destination events?",
+    answer:
+      "Indeed. While our roots are in the valley, we frequently travel across the continent to bring the Garden Table experience to coastal villas and mountain retreats. Travel fees apply for events more than 50 miles from our studio.",
+  },
+  {
+    question: "What is the lead time for a curated booking?",
+    answer:
+      "For signature events, we recommend inquiring 4 to 6 months in advance. However, we occasionally have openings for intimate picnics and dinners on shorter notice — reach out and we'll let you know our availability.",
+  },
+  {
+    question: "Can you accommodate bespoke dietary menus?",
+    answer:
+      "Every menu is a collaborative creation. Our culinary partners specialise in organic, locally-sourced ingredients and can curate menus for any dietary requirement without compromising on elegance.",
+  },
+  {
+    question: "What happens if the weather turns?",
+    answer:
+      "We monitor forecasts closely and always have a contingency plan. For outdoor events, we can arrange beautiful canopy or marquee options that maintain the full aesthetic while keeping you comfortable.",
+  },
+  {
+    question: "How do deposits and payments work?",
+    answer:
+      "We require a 30% deposit to secure your date, with the remaining balance due two weeks before your event. We accept bank transfer and all major cards.",
+  },
+  {
+    question: "Can I visit your studio before booking?",
+    answer:
+      "Absolutely — we love studio visits. It's the best way to see our materials, seasonal florals, and tableware collections in person. Get in touch to arrange a time.",
+  },
+];
+---
+
+<Layout
+  title="Contact"
+  description="Inquire about picnic experiences, wedding styling, or private dinners with The Garden Table."
+>
+  <HeroEditorial
+    label="Reservations & Requests"
+    heading="Begin your <em>journey</em> with us."
+    body="Whether an intimate gathering under the stars or a grand celebration in the meadow, we curate experiences that linger in the memory like a summer evening."
+    image="https://images.unsplash.com/photo-1578863950596-a74dfe8267b5?q=80&w=1980&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    imageAlt="Elegantly set outdoor dining table with fine glassware and soft florals"
+    compact={true}
+  />
+
+  <ContactForm heading="Inquiry Form" action="/api/contact" />
+
+  <FaqAccordion
+    label="Curated Details"
+    heading="Common Enquiries"
+    items={faqItems}
+  />
+
+  <!-- Studio location strip -->
+  <section class="studio">
+    <div class="studio__inner">
+      <div class="studio__info">
+        <h3 class="studio__heading">Our Studio</h3>
+        <address class="studio__address">
+          <p>422 Linden Avenue</p>
+          <p>Estate Row, CA 90210</p>
+          <br />
+          <a href="mailto:hello@gardentable.studio">hello@gardentable.studio</a>
+          <br />
+          <a href="tel:+15550123456">+1 (555) 012 3456</a>
+        </address>
+        <p class="studio__hours label">Mon – Fri &nbsp; 9am – 6pm</p>
+      </div>
+
+      <div class="studio__media">
+        <img
+          src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1200&q=80"
+          alt="Calm, minimal studio interior with natural light and botanical details"
+        />
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .studio {
+    padding-block: var(--section-gap);
+    border-top: 1px solid var(--clr-border);
+  }
+
+  .studio__inner {
+    width: min(1280px, 100% - 2 * var(--spacing));
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 400px;
+  }
+
+  @media (min-width: 48em) {
+    .studio__inner {
+      grid-template-columns: 1fr 2fr;
+    }
+  }
+
+  .studio__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: calc(1.5 * var(--spacing));
+    padding: calc(3 * var(--spacing));
+    border-right: 1px solid var(--clr-border);
+  }
+
+  .studio__heading {
+    font-family: var(--ff-heading);
+    font-style: italic;
+    font-weight: var(--fw-regular);
+    font-size: var(--fs-h2);
+    color: var(--txt-main);
+  }
+
+  .studio__address {
+    font-style: normal;
+    font-size: var(--fs-small);
+    color: var(--txt-muted);
+    line-height: 2;
+  }
+
+  .studio__address a {
+    color: var(--txt-muted);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .studio__address a:hover {
+    color: var(--clr-primary);
+  }
+
+  .studio__hours {
+    color: var(--txt-light);
+    max-width: none;
+  }
+
+  .studio__media {
+    overflow: hidden;
+  }
+
+  .studio__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+</style>

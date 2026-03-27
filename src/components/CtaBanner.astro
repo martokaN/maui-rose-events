@@ -1,0 +1,72 @@
+---
+interface Props {
+  heading?: string;
+  body?: string;
+  buttonLabel?: string;
+  buttonHref?: string;
+  note?: string;
+}
+
+const {
+  heading = "Let's create something timeless together.",
+  body = "Currently accepting inquiries for the 2025 and 2026 seasons. We take on a limited number of events each year to ensure bespoke attention.",
+  buttonLabel = "Book a Consultation",
+  buttonHref = "/contact",
+  note,
+} = Astro.props;
+---
+
+<section class="cta-banner">
+  <div class="cta-banner__inner container">
+    <h2 class="cta-banner__heading" set:html={heading} />
+    {body && <p class="cta-banner__body">{body}</p>}
+    <a href={buttonHref} class="btn btn-primary cta-banner__btn">
+      {buttonLabel}
+    </a>
+    {note && <p class="cta-banner__note label">{note}</p>}
+  </div>
+</section>
+
+<style>
+  .cta-banner {
+    background-color: var(--bg-surface);
+    padding-block: var(--section-gap);
+    /* Subtle warm texture via border */
+    border-top: 1px solid var(--clr-border);
+    border-bottom: 1px solid var(--clr-border);
+  }
+
+  .cta-banner__inner {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(1.5 * var(--spacing));
+  }
+
+  .cta-banner__heading {
+    font-family: var(--ff-heading);
+    font-style: italic;
+    font-weight: var(--fw-regular);
+    font-size: clamp(1.75rem, 4vw, var(--fs-h1));
+    line-height: 1.15;
+    color: var(--txt-main);
+    max-width: 24ch;
+  }
+
+  .cta-banner__body {
+    font-size: var(--fs-body);
+    color: var(--txt-muted);
+    max-width: 52ch;
+    line-height: 1.7;
+  }
+
+  .cta-banner__btn {
+    margin-top: 0.5rem;
+  }
+
+  .cta-banner__note {
+    color: var(--txt-light);
+    margin-top: 0;
+  }
+</style>

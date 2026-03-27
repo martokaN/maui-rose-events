@@ -1,0 +1,143 @@
+---
+interface Props {
+  label?: string;
+  heading?: string;
+  image1: string;
+  image1Alt: string;
+  image2: string;
+  image2Alt: string;
+}
+
+const {
+  label = "The Process",
+  heading = "How it <em>works</em>",
+  image1,
+  image1Alt,
+  image2,
+  image2Alt,
+} = Astro.props;
+
+const steps = [
+  {
+    number: "01",
+    title: "Reserve Your Date",
+    body: "Choose your package and location online. We handle the logistical fine print.",
+  },
+  {
+    number: "02",
+    title: "We Prepare & Set",
+    body: "Our team arrives early to scout the perfect shade and arrange every artisanal detail.",
+  },
+  {
+    number: "03",
+    title: "Arrive & Enjoy",
+    body: "Simply walk in. No cleanup, no effort — just pure presence with your favourite people.",
+  },
+];
+---
+
+<section class="how">
+  <div class="how__inner container">
+    <!-- Steps column -->
+    <div class="how__steps">
+      <span class="label">{label}</span>
+      <h2 class="how__heading" set:html={heading} />
+
+      <ol class="how__list" role="list">
+        {
+          steps.map(({ number, title, body }) => (
+            <li class="step">
+              <span class="step__number" aria-hidden="true">
+                {number}
+              </span>
+              <h3 class="step__title">{title}</h3>
+              <p class="step__body">{body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <!-- Images column -->
+    <div class="how__media">
+      <div class="how__img-top">
+        <img src={image1} alt={image1Alt} />
+      </div>
+      <div class="how__img-bottom">
+        <img src={image2} alt={image2Alt} />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .how {
+    padding-block: var(--section-gap);
+  }
+
+  .how__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: calc(4 * var(--spacing));
+    align-items: center;
+  }
+
+  @media (min-width: 48em) {
+    .how__inner {
+      grid-template-columns: 5fr 7fr;
+    }
+  }
+
+  /* Steps */
+  .how__steps {
+    display: flex;
+    flex-direction: column;
+    gap: calc(1.5 * var(--spacing));
+  }
+
+  .how__heading {
+    font-family: var(--ff-heading);
+    font-weight: var(--fw-regular);
+    font-size: var(--fs-h1);
+  }
+
+  .how__heading em {
+    font-style: italic;
+  }
+
+  .how__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: calc(2.5 * var(--spacing));
+    margin-top: var(--spacing);
+  }
+
+  /* Images */
+  .how__media {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: calc(1.5 * var(--spacing));
+    align-items: start;
+  }
+
+  .how__img-top,
+  .how__img-bottom {
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+  }
+
+  .how__img-bottom {
+    margin-top: calc(3 * var(--spacing));
+  }
+
+  .how__img-top img,
+  .how__img-bottom img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+</style>

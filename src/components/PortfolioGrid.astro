@@ -1,0 +1,268 @@
+---
+interface PortfolioItem {
+  src: string;
+  alt: string;
+  title: string;
+  category: "picnic" | "wedding" | "dinner";
+  /** Optional — spans more columns for a feature image */
+  featured?: boolean;
+}
+
+interface Props {
+  label?: string;
+  heading?: string;
+  subheading?: string;
+  items: PortfolioItem[];
+}
+
+const {
+  label = "The Archive",
+  heading = "Curated moments from the garden table.",
+  subheading = "A visual journey through our most cherished gatherings.",
+  items,
+} = Astro.props;
+
+const categories = [
+  { key: "all", label: "All" },
+  { key: "picnic", label: "Picnics" },
+  { key: "wedding", label: "Weddings" },
+  { key: "dinner", label: "Private Dinners" },
+];
+---
+
+<section class="portfolio">
+  <div class="container">
+    <header class="portfolio__header">
+      <span class="label">{label}</span>
+      <h1 class="portfolio__heading">{heading}</h1>
+      <p class="portfolio__sub">{subheading}</p>
+    </header>
+
+    <!-- Filter tabs -->
+    <div
+      class="portfolio__filters"
+      role="tablist"
+      aria-label="Filter portfolio by category"
+    >
+      {
+        categories.map(({ key, label: catLabel }, i) => (
+          <button
+            class:list={[
+              "portfolio__filter",
+              { "portfolio__filter--active": i === 0 },
+            ]}
+            data-filter={key}
+            role="tab"
+            aria-selected={i === 0 ? "true" : "false"}
+          >
+            {catLabel}
+          </button>
+        ))
+      }
+    </div>
+
+    <!-- Grid -->
+    <ul class="portfolio__grid" role="list" id="portfolio-grid">
+      {
+        items.map(({ src, alt, title, category, featured }) => (
+          <li
+            class:list={[
+              "portfolio__item",
+              { "portfolio__item--featured": featured },
+            ]}
+            data-category={category}
+          >
+            <figure class="portfolio__figure">
+              <img src={src} alt={alt} loading="lazy" />
+              <figcaption class="portfolio__caption">
+                <span class="label">{category}</span>
+                <span class="portfolio__caption-title">{title}</span>
+              </figcaption>
+            </figure>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .portfolio {
+    padding-top: calc(var(--nav-height) + var(--section-gap));
+    padding-bottom: var(--section-gap);
+  }
+
+  /* Header */
+  .portfolio__header {
+    display: flex;
+    flex-direction: column;
+    gap: calc(1.25 * var(--spacing));
+    max-width: 56ch;
+    margin-bottom: calc(3 * var(--spacing));
+  }
+
+  .portfolio__heading {
+    font-family: var(--ff-heading);
+    font-style: italic;
+    font-weight: var(--fw-regular);
+    font-size: clamp(2rem, 5vw, var(--fs-hero));
+    line-height: 1.1;
+  }
+
+  .portfolio__sub {
+    font-size: var(--fs-body);
+    color: var(--txt-muted);
+    line-height: 1.7;
+    max-width: 100%;
+  }
+
+  /* Filter tabs */
+  .portfolio__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(2 * var(--spacing));
+    border-bottom: 1px solid var(--clr-border);
+    padding-bottom: calc(0.75 * var(--spacing));
+    margin-bottom: calc(3 * var(--spacing));
+  }
+
+  .portfolio__filter {
+    font-family: var(--ff-body);
+    font-size: var(--fs-label);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--txt-muted);
+    background: none;
+    border: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: calc(0.75 * var(--spacing));
+    margin-bottom: -1px; /* overlap the section border */
+    cursor: pointer;
+    transition:
+      color var(--transition-fast),
+      border-color var(--transition-fast);
+  }
+
+  .portfolio__filter:hover {
+    color: var(--txt-main);
+  }
+
+  .portfolio__filter--active {
+    color: var(--clr-primary);
+    border-bottom-color: var(--clr-primary);
+  }
+
+  /* Masonry-style grid */
+  .portfolio__grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    columns: 1;
+    gap: calc(1.5 * var(--spacing));
+  }
+
+  @media (min-width: 36em) {
+    .portfolio__grid {
+      columns: 2;
+    }
+  }
+
+  @media (min-width: 64em) {
+    .portfolio__grid {
+      columns: 3;
+    }
+  }
+
+  .portfolio__item {
+    break-inside: avoid;
+    margin-bottom: calc(1.5 * var(--spacing));
+    overflow: hidden;
+  }
+
+  /* Hide filtered items */
+  .portfolio__item[hidden] {
+    display: none;
+  }
+
+  /* Figure */
+  .portfolio__figure {
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+  }
+
+  .portfolio__figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform var(--transition-slow);
+  }
+
+  .portfolio__item:hover .portfolio__figure img {
+    transform: scale(1.04);
+  }
+
+  /* Caption overlay */
+  .portfolio__caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: calc(1.5 * var(--spacing));
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.55) 0%,
+      transparent 100%
+    );
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+  }
+
+  .portfolio__item:hover .portfolio__caption {
+    opacity: 1;
+  }
+
+  .portfolio__caption .label {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .portfolio__caption-title {
+    font-family: var(--ff-heading);
+    font-style: italic;
+    font-size: var(--fs-h3);
+    color: #fff;
+  }
+</style>
+
+<script>
+  const filterBtns =
+    document.querySelectorAll<HTMLButtonElement>(".portfolio__filter");
+  const items = document.querySelectorAll<HTMLLIElement>(".portfolio__item");
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const filter = btn.dataset.filter!;
+
+      // Update active state
+      filterBtns.forEach((b) => {
+        b.classList.remove("portfolio__filter--active");
+        b.setAttribute("aria-selected", "false");
+      });
+      btn.classList.add("portfolio__filter--active");
+      btn.setAttribute("aria-selected", "true");
+
+      // Show / hide items
+      items.forEach((item) => {
+        const cat = item.dataset.category!;
+        if (filter === "all" || cat === filter) {
+          item.removeAttribute("hidden");
+        } else {
+          item.setAttribute("hidden", "");
+        }
+      });
+    });
+  });
+</script>

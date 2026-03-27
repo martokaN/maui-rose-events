@@ -1,0 +1,79 @@
+---
+import ServiceCard from "./ServiceCard.astro";
+
+interface Props {
+  label?: string;
+  heading?: string;
+}
+
+const { label = "What we offer", heading = "Every detail, considered" } =
+  Astro.props;
+
+const services = [
+  {
+    icon: "local_florist",
+    title: "Ceremony Décor",
+    body: "Bespoke altars and aisle arrangements designed to frame your most significant moment. We use organic forms and seasonal textures to create a cohesive bridge between nature and ceremony.",
+  },
+  {
+    icon: "restaurant",
+    title: "Tablescape Design",
+    body: "The art of the table. From curated linens and custom stationery to the delicate placement of blooms, we design every inch of your reception to encourage conversation and wonder.",
+  },
+  {
+    icon: "auto_awesome",
+    title: "Day-of Styling",
+    body: "A seamless execution of your aesthetic vision. Our team manages every visual detail on the day, ensuring each element is perfectly positioned before your first guest arrives.",
+  },
+];
+---
+
+<!-- Material Symbols font — only loaded once if not already in Layout -->
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+/>
+
+<section class="services">
+  <div class="container">
+    <div class="services__header">
+      <span class="label">{label}</span>
+      <h2 class="services__heading">{heading}</h2>
+    </div>
+
+    <div class="services__grid">
+      {services.map((service) => <ServiceCard {...service} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .services {
+    background-color: var(--bg-surface);
+    padding-block: var(--section-gap);
+  }
+
+  .services__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: calc(3 * var(--spacing));
+  }
+
+  .services__heading {
+    font-family: var(--ff-heading);
+    font-weight: var(--fw-regular);
+  }
+
+  .services__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: calc(3 * var(--spacing));
+  }
+
+  @media (min-width: 48em) {
+    .services__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

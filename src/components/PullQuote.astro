@@ -1,0 +1,43 @@
+---
+interface Props {
+  quote: string;
+  attribution?: string;
+  /** Tinted background or plain */
+  tinted?: boolean;
+}
+
+const { quote, attribution, tinted = true } = Astro.props;
+---
+
+<section
+  class:list={["pullquote-section", { "pullquote-section--tinted": tinted }]}
+>
+  <div class="container">
+    <blockquote class="pull-quote">
+      {quote}
+    </blockquote>
+    {attribution && <cite class="pullquote-section__attr">{attribution}</cite>}
+  </div>
+</section>
+
+<style>
+  .pullquote-section {
+    padding-block: var(--section-gap);
+  }
+
+  .pullquote-section--tinted {
+    background-color: var(--bg-surface);
+  }
+
+  /* .pull-quote and cite styles live in global.css */
+  .pullquote-section__attr {
+    display: block;
+    margin-top: calc(1.5 * var(--spacing));
+    font-size: var(--fs-label);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--txt-light);
+    text-align: center;
+    font-style: normal;
+  }
+</style>

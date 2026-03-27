@@ -1,0 +1,172 @@
+---
+interface Step {
+  number: string;
+  title: string;
+  body: string;
+  image: string;
+  imageAlt: string;
+}
+
+interface Props {
+  label?: string;
+  heading?: string;
+  steps?: Step[];
+}
+
+const {
+  label = "How we work",
+  heading = "Our Process",
+  steps = [
+    {
+      number: "01",
+      title: "The Consultation",
+      body: "We begin with a conversation. We want to know your story, your aesthetic leanings, and the feeling you want to evoke. This is where we align our creative vision with your personal narrative.",
+      image: "/images/process-consultation.jpg",
+      imageAlt: "Minimalist design studio with sketches",
+    },
+    {
+      number: "02",
+      title: "The Concept",
+      body: "Our team develops a comprehensive design deck including mood boards, floral palettes, and structural layouts. We refine every detail until it feels like a natural extension of your style.",
+      image: "/images/process-concept.jpg",
+      imageAlt: "Curated colour palette and fabric swatches",
+    },
+    {
+      number: "03",
+      title: "The Execution",
+      body: "Our stylists and florists bring the concept to life. We manage procurement, assembly, and on-site styling, allowing you to simply be present in the beauty of your day.",
+      image: "/images/process-execution.jpg",
+      imageAlt: "Florists working on a large floral installation",
+    },
+  ],
+} = Astro.props;
+---
+
+<section class="process">
+  <div class="container">
+    <div class="process__header">
+      <span class="label">{label}</span>
+      <h2 class="process__heading">{heading}</h2>
+    </div>
+
+    <ol class="process__list" role="list">
+      {
+        steps.map(({ number, title, body, image, imageAlt }, i) => (
+          <li
+            class:list={[
+              "process__step",
+              { "process__step--flip": i % 2 !== 0 },
+            ]}
+          >
+            <div class="process__media">
+              <img src={image} alt={imageAlt} />
+            </div>
+            <div class="process__text">
+              <span class="process__number" aria-hidden="true">
+                {number}
+              </span>
+              <h3 class="process__title">{title}</h3>
+              <p class="process__body">{body}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .process {
+    background-color: var(--bg-main);
+    padding-block: var(--section-gap);
+  }
+
+  .process__header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: calc(4 * var(--spacing));
+  }
+
+  .process__heading {
+    font-family: var(--ff-heading);
+    font-style: italic;
+    font-weight: var(--fw-regular);
+  }
+
+  .process__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: calc(5 * var(--spacing));
+  }
+
+  /* Each step: image + text side by side */
+  .process__step {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: calc(3 * var(--spacing));
+    align-items: center;
+    max-width: 960px;
+    margin-inline: auto;
+    width: 100%;
+  }
+
+  @media (min-width: 48em) {
+    .process__step {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .process__step--flip .process__media {
+      order: 2;
+    }
+    .process__step--flip .process__text {
+      order: 1;
+    }
+  }
+
+  .process__media {
+    aspect-ratio: 1;
+    overflow: hidden;
+  }
+
+  .process__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .process__text {
+    display: flex;
+    flex-direction: column;
+    gap: calc(1.25 * var(--spacing));
+  }
+
+  .process__number {
+    font-family: var(--ff-heading);
+    font-style: italic;
+    font-size: var(--fs-h1);
+    color: var(--clr-primary);
+    opacity: 0.2;
+    line-height: 1;
+  }
+
+  .process__title {
+    font-family: var(--ff-heading);
+    font-weight: var(--fw-regular);
+    font-size: var(--fs-h2);
+    color: var(--txt-main);
+  }
+
+  .process__body {
+    font-size: var(--fs-body);
+    color: var(--txt-muted);
+    line-height: 1.7;
+    max-width: 100%;
+  }
+</style>

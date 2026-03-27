@@ -1,0 +1,78 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import PackagesGrid from "../components/PackagesGrid.astro";
+import HowItWorks from "../components/HowItWorks.astro";
+import TestimonialStrip from "../components/TestimonialStrip.astro";
+import InstagramGrid from "../components/InstagramGrid.astro";
+import CtaBanner from "../components/CtaBanner.astro";
+
+const instagramPhotos = [
+  {
+    src: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80",
+    alt: "Close up of a sparkling glass of champagne with a strawberry",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=600&q=80",
+    alt: "Couple laughing together at a candlelit outdoor picnic",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=600&q=80",
+    alt: "Rustic bread loaf and grapes arranged on a linen cloth",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1590166774851-bc49b23a18fe?q=80&w=989&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    alt: "Elegant cheese board with figs, honey and seasonal fruits",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1578863950596-a74dfe8267b5?q=80&w=1980&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    alt: "Vintage silver cutlery laid on an antique white plate",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80",
+    alt: "Sun setting over a beautifully curated outdoor garden event",
+  },
+];
+---
+
+<Layout
+  title="Home"
+  description="The Garden Table — bespoke picnic and wedding styling experiences curated for your story."
+>
+  <Hero
+    tagline="Denifed by detail"
+    heading="The Art of the <em>Outdoors</em> Dining"
+    image="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1920&q=80"
+    imageAlt="Long outdoor wedding reception table set beneath a canopy of trees at golden hour"
+  />
+
+  <HowItWorks
+    image1="https://images.unsplash.com/photo-1648405746518-136226e83eda?q=80&w=1065&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    image1Alt="Artisan grazing board with seasonal fruits, cheese and fresh bread"
+    image2="https://images.unsplash.com/photo-1689180822802-a50a2d7436c3?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    image2Alt="Sunlit meadow with wildflowers — the perfect picnic setting"
+  />
+
+  <PackagesGrid />
+
+  <TestimonialStrip
+    quote="Maui Rose Events didn't just host a dinner — they orchestrated a memory that my family will cherish for decades. Every petal and plate felt like a gift."
+    author="Elena Vance"
+    location="Napili"
+  />
+
+  <InstagramGrid
+    heading="Follow our Instagram"
+    handle="@MauiRoseEvents"
+    profileUrl="https://instagram.com"
+    photos={instagramPhotos}
+  />
+
+  <CtaBanner
+    heading="Let's create something <em>timeless</em> together."
+    body="Currently accepting inquiries for the 2025 and 2026 seasons. We take on a limited number of events each year to ensure bespoke attention."
+    buttonLabel="Book a Consultation"
+    buttonHref="/contact"
+    note="Responding to all inquiries within 48 hours"
+  />
+</Layout>

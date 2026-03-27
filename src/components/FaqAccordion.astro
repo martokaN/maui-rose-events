@@ -1,0 +1,224 @@
+---
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  label?: string;
+  heading?: string;
+  items?: FaqItem[];
+}
+
+const {
+  label = "Curated Details",
+  heading = "Common Enquiries",
+  items = [
+    {
+      question: "Do you travel for destination events?",
+      answer:
+        "Indeed. While our roots are in the valley, we frequently travel across the continent to bring the Garden Table experience to coastal villas and mountain retreats. Travel fees apply for events more than 50 miles from our studio.",
+    },
+    {
+      question: "What is the lead time for a curated booking?",
+      answer:
+        "For signature events, we recommend inquiring 4 to 6 months in advance. However, we occasionally have openings for intimate dinners on shorter notice — reach out and we'll let you know our availability.",
+    },
+    {
+      question: "Can you accommodate bespoke dietary menus?",
+      answer:
+        "Every menu is a collaborative creation. Our culinary partners specialise in organic, locally-sourced ingredients and can curate menus for any dietary requirement without compromising on elegance.",
+    },
+    {
+      question: "What happens if the weather turns?",
+      answer:
+        "We monitor forecasts closely and always have a contingency plan. For outdoor events, we can arrange beautiful canopy or marquee options that maintain the aesthetic while keeping you comfortable.",
+    },
+  ],
+} = Astro.props;
+---
+
+<section class="faq">
+  <div class="faq__header container--narrow">
+    <span class="label">{label}</span>
+    <h2 class="faq__heading">{heading}</h2>
+  </div>
+
+  <dl class="faq__list container--narrow">
+    {
+      items.map(({ question, answer }, i) => (
+        <div class="faq__item" id={`faq-item-${i}`}>
+          <dt>
+            <button
+              class="faq__trigger"
+              aria-expanded="false"
+              aria-controls={`faq-answer-${i}`}
+              id={`faq-btn-${i}`}
+            >
+              <span class="faq__question">{question}</span>
+              <span class="faq__icon" aria-hidden="true" />
+            </button>
+          </dt>
+          <dd
+            class="faq__answer"
+            id={`faq-answer-${i}`}
+            role="region"
+            aria-labelledby={`faq-btn-${i}`}
+            hidden
+          >
+            <p>{answer}</p>
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+</section>
+
+<style>
+  .faq {
+    padding-block: var(--section-gap);
+  }
+
+  .faq__header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: calc(3 * var(--spacing));
+  }
+
+  .faq__heading {
+    font-family: var(--ff-heading);
+    font-style: italic;
+    font-weight: var(--fw-regular);
+  }
+
+  .faq__list {
+    border-top: 1px solid var(--clr-border);
+  }
+
+  .faq__item {
+    border-bottom: 1px solid var(--clr-border);
+  }
+
+  .faq__trigger {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing);
+    padding-block: calc(1.5 * var(--spacing));
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: color var(--transition-fast);
+  }
+
+  .faq__trigger:hover .faq__question {
+    color: var(--clr-primary);
+  }
+
+  .faq__question {
+    font-family: var(--ff-body);
+    font-size: var(--fs-body);
+    font-weight: var(--fw-medium);
+    color: var(--txt-main);
+    transition: color var(--transition-fast);
+  }
+
+  /* Plus/minus icon built from CSS */
+  .faq__icon {
+    position: relative;
+    display: block;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  .faq__icon::before,
+  .faq__icon::after {
+    content: "";
+    position: absolute;
+    background-color: var(--txt-light);
+    transition:
+      transform 0.3s ease-out,
+      opacity 0.3s ease-out;
+  }
+
+  /* Horizontal bar (always visible) */
+  .faq__icon::before {
+    width: 16px;
+    height: 1px;
+    top: 50%;
+    left: 0;
+    translate: 0 -50%;
+  }
+
+  /* Vertical bar (becomes invisible when open) */
+  .faq__icon::after {
+    width: 1px;
+    height: 16px;
+    left: 50%;
+    top: 0;
+    translate: -50% 0;
+  }
+
+  /* Rotate vertical bar out when expanded */
+  .faq__trigger[aria-expanded="true"] .faq__icon::after {
+    transform: rotate(90deg);
+    opacity: 0;
+  }
+
+  .faq__trigger[aria-expanded="true"] .faq__question {
+    color: var(--clr-primary);
+  }
+
+  /* Answer panel */
+  .faq__answer {
+    overflow: hidden;
+  }
+
+  .faq__answer[hidden] {
+    display: none;
+  }
+
+  .faq__answer p {
+    padding-bottom: calc(1.5 * var(--spacing));
+    font-size: var(--fs-body);
+    color: var(--txt-muted);
+    line-height: 1.7;
+    max-width: 100%;
+  }
+</style>
+
+<script>
+  const triggers =
+    document.querySelectorAll<HTMLButtonElement>(".faq__trigger");
+
+  triggers.forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      const expanded = trigger.getAttribute("aria-expanded") === "true";
+      const answerId = trigger.getAttribute("aria-controls")!;
+      const answer = document.getElementById(answerId)!;
+
+      // Close all others
+      triggers.forEach((t) => {
+        if (t !== trigger) {
+          t.setAttribute("aria-expanded", "false");
+          const id = t.getAttribute("aria-controls")!;
+          document.getElementById(id)?.setAttribute("hidden", "");
+        }
+      });
+
+      // Toggle this one
+      trigger.setAttribute("aria-expanded", String(!expanded));
+      if (expanded) {
+        answer.setAttribute("hidden", "");
+      } else {
+        answer.removeAttribute("hidden");
+      }
+    });
+  });
+</script>

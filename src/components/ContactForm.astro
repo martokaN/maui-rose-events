@@ -1,0 +1,255 @@
+---
+interface Props {
+  heading?: string;
+  successMessage?: string;
+  /** Netlify, Formspree URL, or your own endpoint */
+  action?: string;
+}
+
+const { heading = "Inquiry Form", action = "/api/contact" } = Astro.props;
+---
+
+<section id="inquiry-form" class="contact-form-section">
+  <div class="contact-form-section__inner container--narrow">
+    <div class="contact-form-section__header">
+      <h2 class="contact-form-section__heading">{heading}</h2>
+      <div class="contact-form-section__rule" aria-hidden="true"></div>
+    </div>
+
+    <form
+      class="contact-form"
+      action={action}
+      method="POST"
+      id="contact-form"
+      novalidate
+    >
+      <div class="contact-form__grid">
+        <div class="form-field">
+          <label for="event-type">Event Type</label>
+          <select id="event-type" name="event_type" required>
+            <option value="" disabled selected>Select an option</option>
+            <option value="picnic">Picnic Experience</option>
+            <option value="wedding">Wedding Celebration</option>
+            <option value="proposal">Proposal Setup</option>
+            <option value="party">Garden Party</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="event-date">Preferred Date</label>
+          <input type="date" id="event-date" name="event_date" />
+        </div>
+
+        <div class="form-field">
+          <label for="guests">Number of Guests</label>
+          <input
+            type="number"
+            id="guests"
+            name="guests"
+            min="1"
+            max="500"
+            placeholder="e.g. 12"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="location">Desired Location</label>
+          <input
+            type="text"
+            id="location"
+            name="location"
+            placeholder="City or venue name"
+          />
+        </div>
+
+        <div class="form-field form-field--full">
+          <label for="name">Your Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            placeholder="Full name"
+            autocomplete="name"
+          />
+        </div>
+
+        <div class="form-field form-field--full">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="hello@example.com"
+            autocomplete="email"
+          />
+        </div>
+
+        <div class="form-field form-field--full">
+          <label for="message">Share Your Vision</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="4"
+            placeholder="Tell us about the atmosphere you wish to create..."
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="contact-form__footer">
+        <button type="submit" class="btn btn-primary contact-form__submit">
+          Send Inquiry
+          <span class="contact-form__arrow" aria-hidden="true">→</span>
+        </button>
+        <p class="contact-form__privacy label">
+          Your details are kept private and never shared.
+        </p>
+      </div>
+
+      <!-- Success / error messages -->
+      <p
+        class="contact-form__success"
+        id="form-success"
+        aria-live="polite"
+        hidden
+      >
+        Thank you — we'll be in touch within 48 hours.
+      </p>
+      <p class="contact-form__error" id="form-error" aria-live="polite" hidden>
+        Something went wrong. Please try again or email us directly.
+      </p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .contact-form-section {
+    background-color: var(--bg-surface);
+    padding-block: var(--section-gap);
+  }
+
+  .contact-form-section__inner {
+    /* container--narrow from global.css */
+  }
+
+  .contact-form-section__header {
+    text-align: center;
+    margin-bottom: calc(3 * var(--spacing));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing);
+  }
+
+  .contact-form-section__heading {
+    font-family: var(--ff-heading);
+    font-style: italic;
+    font-weight: var(--fw-regular);
+  }
+
+  .contact-form-section__rule {
+    width: 3rem;
+    height: 1px;
+    background-color: var(--clr-border);
+  }
+
+  /* Form grid — 2 cols on desktop */
+  .contact-form__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: calc(2 * var(--spacing)) calc(4 * var(--spacing));
+  }
+
+  @media (min-width: 48em) {
+    .contact-form__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .form-field--full {
+    grid-column: 1 / -1;
+  }
+
+  /* Submit row */
+  .contact-form__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing);
+    margin-top: calc(3 * var(--spacing));
+    text-align: center;
+  }
+
+  .contact-form__arrow {
+    display: inline-block;
+    transition: translate var(--transition-fast);
+  }
+
+  .contact-form__submit:hover .contact-form__arrow {
+    translate: 4px 0;
+  }
+
+  .contact-form__privacy {
+    color: var(--txt-light);
+    max-width: none;
+  }
+
+  /* Status messages */
+  .contact-form__success {
+    margin-top: calc(2 * var(--spacing));
+    text-align: center;
+    color: var(--clr-primary);
+    font-size: var(--fs-body);
+  }
+
+  .contact-form__error {
+    margin-top: calc(2 * var(--spacing));
+    text-align: center;
+    color: #983030;
+    font-size: var(--fs-body);
+  }
+</style>
+
+<script>
+  const form = document.getElementById(
+    "contact-form",
+  ) as HTMLFormElement | null;
+  const successMsg = document.getElementById("form-success");
+  const errorMsg = document.getElementById("form-error");
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const submitBtn = form.querySelector<HTMLButtonElement>("[type=submit]");
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending…";
+    }
+
+    try {
+      const res = await fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" },
+      });
+
+      if (res.ok) {
+        form.reset();
+        successMsg?.removeAttribute("hidden");
+        errorMsg?.setAttribute("hidden", "");
+      } else {
+        throw new Error("Server error");
+      }
+    } catch {
+      errorMsg?.removeAttribute("hidden");
+      successMsg?.setAttribute("hidden", "");
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `Send Inquiry <span class="contact-form__arrow" aria-hidden="true">→</span>`;
+      }
+    }
+  });
+</script>
