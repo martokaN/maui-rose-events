@@ -25,3 +25,9 @@ pnpm-debug.log*
 
 # Prettier
 .prettierrc
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
