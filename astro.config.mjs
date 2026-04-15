@@ -1,7 +1,7 @@
 // @ts-check
 import { defineConfig, fontProviders } from "astro/config";
-
 import icon from "astro-icon";
+import cloudflare from "@astrojs/cloudflare";
 
 export default defineConfig({
   fonts: [
@@ -20,6 +20,8 @@ export default defineConfig({
       styles: ["normal"],
     },
   ],
-
   integrations: [icon()],
+  adapter: cloudflare({
+    imageService: "compile",
+  }),
 });
