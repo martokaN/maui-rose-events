@@ -1,4 +1,6 @@
 ---
+import { getCollection } from "astro:content";
+
 interface Props {
   heading?: string;
   successMessage?: string;
@@ -7,6 +9,7 @@ interface Props {
 }
 
 const { heading = "Inquiry Form", action = "/api/contact" } = Astro.props;
+const packages = await getCollection("pricePackages");
 ---
 
 <section id="inquiry-form" class="contact-form-section">
@@ -27,12 +30,17 @@ const { heading = "Inquiry Form", action = "/api/contact" } = Astro.props;
         <div class="form-field">
           <label for="event-type">Event Type</label>
           <select id="event-type" name="event_type" required>
-            <option value="" disabled selected>Select an option</option>
+            {
+              packages.map((pkg) => (
+                <option value="ahoj">{pkg.data.title}</option>
+              ))
+            }
+            <!-- <option value="" disabled selected>Select an option</option>
             <option value="picnic">Picnic Experience</option>
             <option value="wedding">Wedding Celebration</option>
             <option value="proposal">Proposal Setup</option>
             <option value="party">Garden Party</option>
-            <option value="other">Other</option>
+            <option value="other">Other</option> -->
           </select>
         </div>
 
@@ -54,16 +62,6 @@ const { heading = "Inquiry Form", action = "/api/contact" } = Astro.props;
         </div>
 
         <div class="form-field">
-          <label for="location">Desired Location</label>
-          <input
-            type="text"
-            id="location"
-            name="location"
-            placeholder="City or venue name"
-          />
-        </div>
-
-        <div class="form-field form-field--full">
           <label for="name">Your Name</label>
           <input
             type="text"
@@ -104,7 +102,9 @@ const { heading = "Inquiry Form", action = "/api/contact" } = Astro.props;
           <span class="contact-form__arrow" aria-hidden="true">→</span>
         </button>
         <p class="contact-form__privacy label">
-          Your details are kept private and never shared.
+          By booking, you agree to our <a href="/policy"
+            >booking & cancellation policy.</a
+          >
         </p>
       </div>
 
@@ -194,6 +194,21 @@ const { heading = "Inquiry Form", action = "/api/contact" } = Astro.props;
   .contact-form__privacy {
     color: var(--txt-light);
     max-width: none;
+  }
+
+  .contact-form__privacy a {
+    color: var(--txt-main);
+    text-decoration: underline;
+    text-decoration-color: var(--clr-border);
+    text-underline-offset: 3px;
+    transition:
+      text-decoration-color var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .contact-form__privacy a:hover {
+    color: var(--clr-primary);
+    text-decoration-color: var(--clr-primary);
   }
 
   /* Status messages */

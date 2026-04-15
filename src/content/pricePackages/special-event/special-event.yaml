@@ -1,0 +1,13 @@
+image: ./image.jpg
+imageAlt: Long table special event picnic setup
+price: Starting at $850
+title: Special Event
+subtitle: Celebrate in Style
+mood: Festive and memorable
+body: "Our special event picnics are designed to celebrate life’s meaningful moments. Perfect for birthdays, gender reveals, and girls’ dates, baby shower... Each setup is thoughtfully styled to create a beautiful and memorable experience."
+capacity: 4-12 people
+includes:
+  - Custom Stationery & Menus
+  - Celebrate Your Special Moments in Style
+featured: false
+order: 4

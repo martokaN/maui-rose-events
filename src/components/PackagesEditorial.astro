@@ -1,17 +1,9 @@
 ---
-interface Package {
-  image: string;
-  imageAlt: string;
-  price: string;
-  title: string;
-  body: string;
-  includes: string[];
-  featured?: boolean;
-  href?: string;
-}
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
 
 interface Props {
-  packages: Package[];
+  packages: CollectionEntry<"pricePackages">[];
   label?: string;
   heading?: string;
 }
@@ -36,20 +28,13 @@ const {
 
     <ol class="pkg-editorial__list" role="list">
       {
-        packages.map(
-          (
-            {
-              image,
-              imageAlt,
-              price,
-              title,
-              body,
-              includes,
-              featured,
-              href = "/contact",
-            },
-            i,
-          ) => (
+        packages.map((item, i) => {
+          const { image, imageAlt, price, title, body, includes, featured } =
+            item.data;
+
+          const href = "/contact";
+
+          return (
             <li
               class:list={[
                 "pkg-editorial__item",
@@ -57,9 +42,11 @@ const {
               ]}
             >
               <div class="pkg-editorial__media">
-                <img
+                <Image
                   src={image}
                   alt={imageAlt}
+                  widths={[400, 700, 1024]}
+                  sizes="(max-width: 48em) 100vw, 50vw"
                   loading={i === 0 ? "eager" : "lazy"}
                 />
                 <span class="badge pkg-editorial__price">{price}</span>
@@ -80,12 +67,12 @@ const {
                 <p class="pkg-editorial__body">{body}</p>
 
                 <ul class="pkg-editorial__includes" role="list">
-                  {includes.map((item) => (
+                  {includes.map((point) => (
                     <li class="pkg-editorial__include">
                       <span class="pkg-editorial__dash" aria-hidden="true">
                         —
                       </span>
-                      {item}
+                      {point}
                     </li>
                   ))}
                 </ul>
@@ -104,8 +91,8 @@ const {
                 </div>
               </div>
             </li>
-          ),
-        )
+          );
+        })
       }
     </ol>
   </div>

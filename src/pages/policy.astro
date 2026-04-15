@@ -1,0 +1,112 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Booking & Cancellation Policy"
+  description="A full-page policy layout outlining booking requirements, payment terms, rescheduling and cancellation rules, weather contingencies, and location permit information for event bookings."
+>
+  <article class="container--narrow policy-article">
+    <header class="policy-header">
+      <span class="label">Legal</span>
+      <h1>Booking & Cancellation Policy</h1>
+    </header>
+
+    <section class="policy-section">
+      <h2>1. Booking and Payment</h2>
+      <p>
+        To secure your preferred date and time, a 50% non-refundable retainer is
+        required at the time of booking. The remaining balance must be paid in
+        full at least 7 days prior to the event date. For bookings made less
+        than 7 days in advance, full payment is required upfront.
+      </p>
+    </section>
+
+    <section class="policy-section">
+      <h2>2. Rescheduling & Cancellations</h2>
+      <p>
+        We understand that plans can change. If you need to reschedule, please
+        notify us at least 72 hours before your event.
+      </p>
+      <ul class="policy-list" role="list">
+        <li class="policy-list__item">
+          <span class="label">Rescheduling</span>
+          <p>
+            Your retainer can be transferred to a new date (subject to
+            availability) within 90 days of the original booking.
+          </p>
+        </li>
+        <li class="policy-list__item">
+          <span class="label">Cancellations</span>
+          <p>
+            Cancellations made within 72 hours of the event are non-refundable.
+          </p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="policy-section">
+      <h2>3. Weather Policy</h2>
+      <p>
+        The beauty of Hawaii comes with unpredictable weather. In the event of
+        rain or high winds, you may reschedule for a future date at no
+        additional cost.
+      </p>
+    </section>
+
+    <section class="policy-section">
+      <h2>4. Locations & Permits</h2>
+      <p>
+        We operate in compliance with local regulations. Certain beaches or
+        parks may require specific permits or have restrictions on group sizes.
+        We will guide you through the best available locations during the
+        booking process.
+      </p>
+    </section>
+  </article>
+</Layout>
+
+<style>
+  .policy-article {
+    padding-top: calc(var(--nav-height) + var(--section-gap));
+    padding-bottom: var(--section-gap);
+  }
+
+  .policy-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-bottom: calc(2 * var(--spacing));
+    border-bottom: 1px solid var(--clr-border);
+    margin-bottom: calc(3 * var(--spacing));
+  }
+
+  .policy-section {
+    margin-bottom: calc(3 * var(--spacing));
+  }
+
+  .policy-section h2 {
+    margin-bottom: var(--spacing);
+  }
+
+  .policy-section p {
+    max-width: 65ch;
+  }
+
+  .policy-list {
+    margin-top: calc(1.5 * var(--spacing));
+    background-color: var(--bg-surface);
+    border: 1px solid var(--clr-border);
+  }
+
+  .policy-list__item {
+    padding: calc(1.25 * var(--spacing)) calc(1.5 * var(--spacing));
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .policy-list__item + .policy-list__item {
+    border-top: 1px solid var(--clr-border);
+  }
+</style>

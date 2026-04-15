@@ -1,0 +1,14 @@
+image: ./image.jpg
+imageAlt: Intimate picnic setup for two
+price: Starting at $250
+title: Romantic Picnic for Two
+subtitle: Elegant & Simple
+mood: Intimate and romantic
+body: An intimate setting designed for romance. Perfect for couples to connect and create unforgettable moments. Just you, your person, and two hours of curated dining to remember.
+capacity: 2 people
+duration: 2 hours
+includes:
+  - Elegant & Simple
+  - 2 Hours of Curated Dining
+featured: false
+order: 1

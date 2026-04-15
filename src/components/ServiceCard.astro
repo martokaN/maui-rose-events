@@ -1,38 +1,31 @@
 ---
+import { Icon } from "astro-icon/components";
+
 interface Props {
-  icon: string; /** Material Symbol name e.g. "local_florist" */
+  icon: string; /** Lucide icon name e.g. "lucide:heart" */
   title: string;
   body: string;
 }
-
 const { icon, title, body } = Astro.props;
 ---
 
 <article class="service-card">
-  <span class="service-card__icon material-symbols-outlined" aria-hidden="true">
-    {icon}
-  </span>
+  <Icon name={icon} class="service-card__icon" aria-hidden="true" />
   <h3 class="service-card__title">{title}</h3>
   <p class="service-card__body">{body}</p>
 </article>
-
 <style>
   .service-card {
     display: flex;
     flex-direction: column;
     gap: calc(1.25 * var(--spacing));
   }
-
   .service-card__icon {
-    font-size: 2rem;
+    display: block;
+    width: 2rem;
+    height: 2rem;
     color: var(--clr-primary);
-    font-variation-settings:
-      "FILL" 0,
-      "wght" 300,
-      "GRAD" 0,
-      "opsz" 24;
   }
-
   .service-card__title {
     font-family: var(--ff-heading);
     font-style: italic;
@@ -40,7 +33,6 @@ const { icon, title, body } = Astro.props;
     font-size: var(--fs-h3);
     color: var(--txt-main);
   }
-
   .service-card__body {
     font-size: var(--fs-body);
     color: var(--txt-muted);

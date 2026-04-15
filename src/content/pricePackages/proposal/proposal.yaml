@@ -1,0 +1,12 @@
+image: ./image.jpg
+imageAlt: Romantic proposal picnic setup
+price: Starting at $600
+title: Proposal Picnic
+subtitle: Emotional & Romantic
+mood: Magical and unforgettable
+body: A magical setting for your perfect ‘YES’ - our proposal picnics are designed to create an intimate, romantic atmosphere where your special moment becomes unforgettable.
+capacity: 2 people
+includes:
+  - Emotional & Romantic
+featured: false
+order: 3

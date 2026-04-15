@@ -1,0 +1,118 @@
+---
+interface Props {
+  label?: string;
+  heading?: string;
+}
+
+const { label = "Elevate Your Stay", heading = "Optional Add-ons" } =
+  Astro.props;
+
+const addons = [
+  { name: "Lei greeting", note: "Hawaiian welcome" },
+  { name: "Premium charcuterie board", note: "Large / themed" },
+  { name: "Cake or mini dessert set", note: "" },
+  { name: "Bubbles", note: "" },
+  { name: "Fresh flower upgrade", note: "" },
+  { name: "Professional photographer", note: "" },
+  { name: "Balloon decor", note: "" },
+  { name: "Painting picnic", note: "Canvas + paint" },
+  {
+    name: "Movie picnic setup",
+    note: "Projector + screen (Private property only)",
+  },
+];
+---
+
+<section class="addons">
+  <div class="container--narrow">
+    <div class="section-header">
+      <h2 class="fs-h2">{heading}</h2>
+      <span
+        class="label"
+        style="font-family: var(--ff-heading); font-style: italic;"
+        >{label}</span
+      >
+    </div>
+
+    <ul class="addons__grid" role="list">
+      {
+        addons.map((addon) => (
+          <li class="addons__item">
+            <div class="addons__info">
+              <span class="addons__name">{addon.name}</span>
+              {addon.note && <span class="addons__note">— {addon.note}</span>}
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="addons__footer-text label text-center">
+      All add-ons must be requested at least 72 hours in advance.
+    </p>
+  </div>
+</section>
+
+<style>
+  .addons {
+    padding-bottom: var(--section-gap);
+    background-color: var(--bg-main);
+  }
+
+  /* Shared header style from your global/pricing */
+  .addons .section-header {
+    margin-bottom: calc(2 * var(--spacing));
+  }
+
+  .addons__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 48em) {
+    .addons__grid {
+      grid-template-columns: 1fr 1fr;
+      column-gap: calc(4 * var(--spacing));
+    }
+  }
+
+  .addons__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: 1.25rem;
+    border-bottom: 1px solid var(--clr-border);
+    transition: padding-left var(--transition-fast);
+  }
+
+  .addons__item:hover {
+    padding-left: 0.5rem;
+  }
+
+  .addons__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .addons__name {
+    font-family: var(--ff-heading);
+    font-size: var(--fs-body);
+    color: var(--txt-main);
+  }
+
+  .addons__note {
+    font-family: var(--ff-body);
+    font-size: var(--fs-label);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--txt-light);
+  }
+
+  .addons__footer-text {
+    display: block;
+    margin-top: calc(2 * var(--spacing));
+    font-style: italic;
+    max-width: 100%;
+  }
+</style>

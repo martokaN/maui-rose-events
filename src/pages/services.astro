@@ -1,12 +1,14 @@
 ---
+import { getCollection } from "astro:content";
+
 import Layout from "../layouts/Layout.astro";
-import PackagesGrid from "../components/PackagesGrid.astro";
 import ServicesGrid from "../components/ServicesGrid.astro";
 import ProcessSteps from "../components/ProcessSteps.astro";
 import TestimonialStrip from "../components/TestimonialStrip.astro";
 import CtaBanner from "../components/CtaBanner.astro";
 import HeroEditorial from "../components/HeroEditorial.astro";
 import PackagesEditorial from "../components/PackagesEditorial.astro";
+import PicnicAddons from "../components/PicnicAddons.astro";
 
 const galleryImages = [
   {
@@ -53,48 +55,51 @@ const processSteps = [
   },
 ];
 
-const packages = [
-  {
-    image: "/images/package-date.jpg",
-    imageAlt: "Intimate picnic setup for two",
-    price: "Starting at $250",
-    title: "Basic Picnic",
-    body: "An intimate alfresco setting designed for connection, featuring soft textiles and seasonal floral accents.",
-    includes: [
-      "2 Hours of Curated Dining",
-      "Artisanal Grazing Board",
-      "Chilled Refreshments",
-    ],
-    featured: false,
-  },
-  {
-    image:
-      "https://plus.unsplash.com/premium_photo-1674197235634-c2c4799d0714?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    imageAlt: "Luxury proposal setup",
-    price: "Starting at $450",
-    title: "Luxury Setup",
-    body: "A masterfully orchestrated scene for life's most significant milestones. Refined, romantic, and camera-ready.",
-    includes: [
-      "Signature Floral Artistry",
-      "Premium Tablescape Design",
-      "Secret Event Coordination",
-    ],
-    featured: true,
-  },
-  {
-    image: "/images/package-group.jpg",
-    imageAlt: "Long table event setup",
-    price: "Starting at $600",
-    title: "Special Event",
-    body: "Elevated group dining for your inner circle. A grand long-table aesthetic for birthdays and bridal celebrations.",
-    includes: [
-      "Seating for 6–12 Guests",
-      "Vintage Plate Styling",
-      "Custom Stationery & Menus",
-    ],
-    featured: false,
-  },
-];
+// const packages = [
+//   {
+//     image: "/images/package-date.jpg",
+//     imageAlt: "Intimate picnic setup for two",
+//     price: "Starting at $250",
+//     title: "Basic Picnic",
+//     body: "An intimate alfresco setting designed for connection, featuring soft textiles and seasonal floral accents.",
+//     includes: [
+//       "2 Hours of Curated Dining",
+//       "Artisanal Grazing Board",
+//       "Chilled Refreshments",
+//     ],
+//     featured: false,
+//   },
+//   {
+//     image:
+//       "https://plus.unsplash.com/premium_photo-1674197235634-c2c4799d0714?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+//     imageAlt: "Luxury proposal setup",
+//     price: "Starting at $450",
+//     title: "Luxury Setup",
+//     body: "A masterfully orchestrated scene for life's most significant milestones. Refined, romantic, and camera-ready.",
+//     includes: [
+//       "Signature Floral Artistry",
+//       "Premium Tablescape Design",
+//       "Secret Event Coordination",
+//     ],
+//     featured: true,
+//   },
+//   {
+//     image: "/images/package-group.jpg",
+//     imageAlt: "Long table event setup",
+//     price: "Starting at $600",
+//     title: "Special Event",
+//     body: "Elevated group dining for your inner circle. A grand long-table aesthetic for birthdays and bridal celebrations.",
+//     includes: [
+//       "Seating for 6–12 Guests",
+//       "Vintage Plate Styling",
+//       "Custom Stationery & Menus",
+//     ],
+//     featured: false,
+//   },
+// ];
+
+const allPackages = await getCollection("pricePackages");
+const packages = allPackages.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Layout
@@ -104,33 +109,29 @@ const packages = [
   <HeroEditorial
     label="Picnics & Weddings"
     heading="Every gathering deserves to be <em>unforgettable.</em>"
-    body="Whether an intimate picnic for two or a grand wedding celebration, we bring the same obsessive attention to detail to every event we touch. Our work is rooted in seasonal beauty, honest materials, and the belief that the best moments happen around a well-set table."
+    body="Whether an intimiate picnic for two or a grand wedding celebration, we bring the same obsessive attention to detail to every event we touch."
     image="https://images.unsplash.com/photo-1652169892293-ba174ef19931?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     imageAlt="Elegant outdoor wedding table with organic florals and candlelight"
     compact={true}
   />
 
   <!-- What we do — 3 pillars covering both services -->
-  <ServicesGrid label="What we do" heading="One studio, two specialities" />
+  <ServicesGrid />
 
   <PackagesEditorial {packages} />
 
-  <!-- Shared process — applies to both picnics and weddings -->
-  <ProcessSteps steps={processSteps} />
+  <PicnicAddons />
 
-  <TestimonialStrip
+  <!-- Shared process — applies to both picnics and weddings -->
+  <!-- <ProcessSteps steps={processSteps} /> -->
+
+  <!-- <TestimonialStrip
     quote="A masterclass in outdoor elegance. Maui Rose transformed a simple sunset into a curated gallery experience. Every detail—from the vintage glassware to the floral artistry—was perfection."
     author="Mike K."
     location="Lahaina"
-  />
+  /> -->
 
-  <CtaBanner
-    heading="Let's create something <em>timeless</em> together."
-    body="Currently accepting inquiries for the 2025 and 2026 seasons. We take on a limited number of events each year to ensure bespoke attention."
-    buttonLabel="Book a Consultation"
-    buttonHref="/contact"
-    note="Responding to all inquiries within 48 hours"
-  />
+  <CtaBanner />
 </Layout>
 
 <style>

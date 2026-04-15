@@ -1,0 +1,12 @@
+image: ./image.jpg
+imageAlt: Luxury picnic setup with elegant décor
+price: Starting at $450
+title: Luxury Picnic Setup
+subtitle: Elegant & Professional
+mood: Sophisticated and refined
+body: A luxury picnic setup designed with elegant details, premium décor, and a beautifully styled setting crafted to impress for any occasion.
+capacity: 2-6 people
+includes:
+  - Elegant & Professional
+featured: true
+order: 2
