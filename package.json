@@ -23,6 +23,8 @@
     "wrangler": "^4.83.0"
   },
   "overrides": {
-    "vite": "^7"
+    "vite": "^7",
+    "@iconify/utils": "^3.0.0",
+    "@iconify/tools": "^5.0.0"
   }
 }

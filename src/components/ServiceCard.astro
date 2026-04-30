@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon/components";
 
 interface Props {
-  icon: string; /** Lucide icon name e.g. "lucide:heart" */
+  icon: string;
   title: string;
   body: string;
 }
@@ -10,7 +10,12 @@ const { icon, title, body } = Astro.props;
 ---
 
 <article class="service-card">
-  <Icon name={icon} class="service-card__icon" aria-hidden="true" />
+  <Icon
+    name={icon}
+    class="service-card__icon"
+    aria-hidden="true"
+    stroke-width={1}
+  />
   <h3 class="service-card__title">{title}</h3>
   <p class="service-card__body">{body}</p>
 </article>
@@ -26,6 +31,7 @@ const { icon, title, body } = Astro.props;
     height: 2rem;
     color: var(--clr-primary);
   }
+
   .service-card__title {
     font-family: var(--ff-heading);
     font-style: italic;

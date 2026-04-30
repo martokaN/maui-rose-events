@@ -8,18 +8,29 @@ const { label = "Elevate Your Stay", heading = "Optional Add-ons" } =
   Astro.props;
 
 const addons = [
-  { name: "Lei greeting", note: "Hawaiian welcome" },
-  { name: "Premium charcuterie board", note: "Large / themed" },
-  { name: "Cake or mini dessert set", note: "" },
-  { name: "Bubbles", note: "" },
-  { name: "Fresh flower upgrade", note: "" },
-  { name: "Professional photographer", note: "" },
-  { name: "Balloon decor", note: "" },
-  { name: "Painting picnic", note: "Canvas + paint" },
+  { name: "Lei greeting", note: "Hawaiian welcome", price: "$45 / person" },
+  { name: "Premium charcuterie board", note: "Large / themed", price: "$120" },
+  { name: "Cake or mini dessert set", note: "", price: "$90" },
+  { name: "Bubbles", note: "", price: "30$" },
+  { name: "Fresh flower upgrade", note: "", price: "$75+" },
+  {
+    name: "Professional photographer",
+    note: "30 min / 1 hour",
+    price: "$350 / $650",
+  },
+  { name: "Balloon decor", note: "", price: "$150" },
+  { name: "Painting picnic", note: "Canvas + paint", price: "$25/ person" },
   {
     name: "Movie picnic setup",
     note: "Projector + screen (Private property only)",
+    price: "$150",
   },
+  { name: "Fresh coconut", note: "", price: "$15" },
+  { name: "Local Fruit Platter", note: "", price: "$45" },
+  { name: "Large Charcuterie", note: "2–4 guests", price: "$150" },
+  { name: "Gourmet pastry Basket", note: "", price: "$45" },
+  { name: "Polaroid Package", note: "Camera + 10 films", price: "$45" },
+  { name: "Private Lei Making Lesson", note: "", price: "$150" },
 ];
 ---
 
@@ -42,14 +53,15 @@ const addons = [
               <span class="addons__name">{addon.name}</span>
               {addon.note && <span class="addons__note">— {addon.note}</span>}
             </div>
+            <span class="addons__price">{addon.price}</span>
           </li>
         ))
       }
     </ul>
 
-    <p class="addons__footer-text label text-center">
+    <!-- <p class="addons__footer-text label text-center">
       All add-ons must be requested at least 72 hours in advance.
-    </p>
+    </p> -->
   </div>
 </section>
 
@@ -76,10 +88,18 @@ const addons = [
     }
   }
 
+  .addons__price {
+    font-family: var(--ff-heading);
+    font-size: var(--fs-small);
+    color: var(--txt-muted);
+    white-space: nowrap; /* Keeps the price on one line */
+    margin-left: 1rem;
+  }
+
   .addons__item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     padding-block: 1.25rem;
     border-bottom: 1px solid var(--clr-border);
     transition: padding-left var(--transition-fast);

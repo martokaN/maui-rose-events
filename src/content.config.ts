@@ -9,9 +9,16 @@ const pricePackages = defineCollection({
       image: image(),
       imageAlt: z.string(),
       price: z.string(),
+      priceTiers: z
+        .array(
+          z.object({
+            guests: z.string(),
+            amount: z.string(),
+          }),
+        )
+        .optional(),
       title: z.string(),
       subtitle: z.string(),
-      mood: z.string(),
       body: z.string(),
       capacity: z.string(),
       duration: z.string().optional(),

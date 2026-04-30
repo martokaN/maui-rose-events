@@ -1,0 +1,158 @@
+---
+import { Image } from "astro:assets";
+
+interface Step {
+  number: string;
+  title: string;
+  description: string;
+  imageSrc: string;
+  imageAlt: string;
+}
+
+interface Props {
+  label?: string;
+  heading?: string;
+  steps?: Step[];
+}
+
+const {
+  label = "Our Process",
+  heading = "How We Work",
+  steps = [
+    {
+      number: "01",
+      title: "Consultation & Vision",
+      description: "We start with a conversation to understand your vision, style, and preferences. This helps us align our creative direction with your personal narrative.",
+      imageSrc: "/images/process-consultation.jpg",
+      imageAlt: "Couple discussing plans with designer",
+    },
+    {
+      number: "02",
+      title: "Design & Planning",
+      description: "Our team develops a comprehensive design deck including mood boards, floral palettes, and structural layouts. We refine every detail until it feels like a natural extension of your style.",
+      imageSrc: "/images/process-design.jpg",
+      imageAlt: "Design mood board with fabric swatches",
+    },
+    {
+      number: "03",
+      title: "Execution & Styling",
+      description: "Our stylists and florists bring the concept to life. We manage procurement, assembly, and on-site styling, allowing you to simply be present in the beauty of your day.",
+      imageSrc: "/images/process-execution.jpg",
+      imageAlt: "Florists setting up a floral installation",
+    },
+  ],
+} = Astro.props;
+---
+
+<section class="process-steps padding-block-lg">
+  <div class="container">
+    <div class="process-steps__header text-center">
+      {label && <span class="label">{label}</span>}
+      <h2 class="process-steps__heading serif">{heading}</h2>
+    </div>
+
+    <div class="process-steps__grid">
+      {steps.map((step) => (
+        <article class="process-steps__step">
+          <div class="process-steps__media">
+            <Image
+              src={step.imageSrc}
+              alt={step.imageAlt}
+              width={400}
+              height={500}
+              loading="lazy"
+              decoding="async"
+              class="process-steps__img"
+            />
+            <span class="process-steps__number" aria-hidden="true">{step.number}</span>
+          </div>
+          <div class="process-steps__content flow">
+            <h3 class="process-steps__title">{step.title}</h3>
+            <p class="process-steps__description">{step.description}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .process-steps__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: calc(4 * var(--spacing));
+    align-items: center;
+  }
+
+  .process-steps__heading {
+    font-size: var(--fs-h2);
+    line-height: 1.1;
+    color: var(--txt-main);
+  }
+
+  .process-steps__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: calc(4 * var(--spacing));
+  }
+
+  @media (min-width: 48em) {
+    .process-steps__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: calc(2 * var(--spacing));
+    }
+  }
+
+  .process-steps__step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .process-steps__media {
+    position: relative;
+    width: 100%;
+    margin-bottom: calc(1.5 * var(--spacing));
+  }
+
+  .process-steps__img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    display: block;
+  }
+
+  .process-steps__number {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-family: var(--ff-heading);
+    font-style: italic;
+    font-size: var(--fs-h1);
+    color: var(--clr-primary);
+    opacity: 0.15;
+    line-height: 1;
+    padding: calc(0.5 * var(--spacing));
+  }
+
+  .process-steps__content {
+    max-width: 36ch;
+  }
+
+  .process-steps__title {
+    font-family: var(--ff-heading);
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-regular);
+    color: var(--txt-main);
+    margin-bottom: 0.5rem;
+  }
+
+  .process-steps__description {
+    font-size: var(--fs-body);
+    line-height: 1.7;
+    color: var(--txt-muted);
+  }
+</style>

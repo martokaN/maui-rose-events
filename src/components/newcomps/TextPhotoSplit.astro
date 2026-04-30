@@ -1,0 +1,102 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+  /** Optional label above heading */
+  label?: string;
+  heading: string;
+  body: string;
+  /** Image source path (relative to src/assets/) */
+  imageSrc: string;
+  imageAlt: string;
+  /** Reverse layout: image on left, text on right? Default false (text left, image right) */
+  reverse?: boolean;
+}
+
+const {
+  label,
+  heading,
+  body,
+  imageSrc,
+  imageAlt,
+  reverse = false,
+} = Astro.props;
+---
+
+<section class="text-photo-split padding-block-lg">
+  <div class="container">
+    <div class="text-photo-split__inner even-columns">
+      <div
+        class="text-photo-split__text flow"
+        style={reverse ? "order: 2" : "order: 1"}
+      >
+        {label && <span class="label">{label}</span>}
+        <h2 class="text-photo-split__heading serif">{heading}</h2>
+        <p class="text-photo-split__body">{body}</p>
+      </div>
+      <div
+        class="text-photo-split__media"
+        style={reverse ? "order: 1" : "order: 2"}
+      >
+        <!-- Using Astro's Image component for optimization -->
+        <Image
+          src={imageSrc}
+          alt={imageAlt}
+          width={600}
+          height={800}
+          loading="lazy"
+          decoding="async"
+          class="text-photo-split__img"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .text-photo-split__inner {
+    align-items: center;
+    gap: calc(4 * var(--spacing));
+  }
+
+  .text-photo-split__text {
+    max-width: 50ch;
+  }
+
+  .text-photo-split__heading {
+    font-size: var(--fs-h2);
+    line-height: 1.1;
+    color: var(--txt-main);
+    margin-bottom: 1rem;
+  }
+
+  .text-photo-split__body {
+    font-size: var(--fs-body);
+    line-height: 1.7;
+    color: var(--txt-muted);
+  }
+
+  .text-photo-split__media {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+  }
+
+  .text-photo-split__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-slow);
+  }
+
+  .text-photo-split__img:hover {
+    transform: scale(1.02);
+  }
+
+  @media (min-width: 48em) {
+    .text-photo-split__inner {
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
+    }
+  }
+</style>

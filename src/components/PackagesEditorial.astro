@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
@@ -19,20 +20,29 @@ const {
   <div class="container">
     <div class="pkg-editorial__header section-header">
       <h2 class="pkg-editorial__heading">{heading}</h2>
-      <span
-        class="label"
-        style="font-family: var(--ff-heading); font-style: italic;"
-        >{label}</span
-      >
+      <span class="label italic-heading">{label}</span>
     </div>
 
     <ol class="pkg-editorial__list" role="list">
       {
         packages.map((item, i) => {
-          const { image, imageAlt, price, title, body, includes, featured } =
-            item.data;
+          const {
+            image,
+            imageAlt,
+            price,
+            priceTiers,
+            title,
+            subtitle,
+            body,
+            includes,
+            featured,
+            capacity,
+            duration,
+          } = item.data;
 
           const href = "/contact";
+          const hasTiers = priceTiers && priceTiers.length > 0;
+          const accordionId = `tiers-${i}`;
 
           return (
             <li
@@ -54,17 +64,39 @@ const {
 
               <div class="pkg-editorial__content">
                 <div class="pkg-editorial__meta">
-                  <span class="pkg-editorial__number label" aria-hidden="true">
+                  <span class="pkg-editorial__number" aria-hidden="true">
                     0{i + 1}
                   </span>
-                  <span class="pkg-editorial__tag label">
-                    {featured ? "Most Popular" : "\u00A0"}
-                  </span>
+                  {featured && (
+                    <span class="pkg-editorial__tag label">Most Popular</span>
+                  )}
                 </div>
 
                 <h3 class="pkg-editorial__title">{title}</h3>
+                <p class="pkg-editorial__subtitle">{subtitle}</p>
 
-                <p class="pkg-editorial__body">{body}</p>
+                <div class="pkg-editorial__specs">
+                  {capacity && (
+                    <div class="pkg-editorial__spec">
+                      <Icon name="lucide:users" size={16} />
+                      <div class="pkg-editorial__spec-info">
+                        <span class="label">Capacity</span>
+                        <span class="value">{capacity}</span>
+                      </div>
+                    </div>
+                  )}
+                  {duration && (
+                    <div class="pkg-editorial__spec">
+                      <Icon name="lucide:clock" size={16} />
+                      <div class="pkg-editorial__spec-info">
+                        <span class="label">Duration</span>
+                        <span class="value">{duration}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <p class="pkg-editorial__body" set:html={body} />
 
                 <ul class="pkg-editorial__includes" role="list">
                   {includes.map((point) => (
@@ -77,6 +109,39 @@ const {
                   ))}
                 </ul>
 
+                {hasTiers && (
+                  <div class="pkg-editorial__tiers">
+                    <button
+                      class="pkg-editorial__tiers-toggle"
+                      aria-expanded="false"
+                      aria-controls={accordionId}
+                    >
+                      <span class="label">View pricing by group size</span>
+                      <Icon
+                        name="lucide:chevron-down"
+                        class="chevron"
+                        size={18}
+                      />
+                    </button>
+
+                    <div id={accordionId} class="pkg-editorial__tiers-panel">
+                      <div class="pkg-editorial__tiers-inner">
+                        <ul class="pkg-editorial__tiers-list">
+                          {priceTiers.map((tier) => (
+                            <li class="pkg-editorial__tier">
+                              <span class="tier-label">
+                                <Icon name="lucide:users" size={12} />
+                                {tier.guests}
+                              </span>
+                              <span class="tier-price">{tier.amount}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <div class="pkg-editorial__footer">
                   <span class="pkg-editorial__price-inline">{price}</span>
                   <a
@@ -86,7 +151,7 @@ const {
                       featured ? "btn-primary" : "btn-outline",
                     ]}
                   >
-                    Inquire
+                    Inquire Now
                   </a>
                 </div>
               </div>
@@ -98,40 +163,50 @@ const {
   </div>
 </section>
 
+<script>
+  function setupAccordions() {
+    document.querySelectorAll(".pkg-editorial__tiers-toggle").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const isExpanded = btn.getAttribute("aria-expanded") === "true";
+        btn.setAttribute("aria-expanded", String(!isExpanded));
+      });
+    });
+  }
+  setupAccordions();
+  document.addEventListener("astro:after-swap", setupAccordions);
+</script>
+
 <style>
+  .pkg-editorial__header {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
   .pkg-editorial {
     padding-block: var(--section-gap);
   }
-
   .pkg-editorial__heading {
     font-family: var(--ff-heading);
-    font-weight: var(--fw-regular);
+    font-weight: 400;
+  }
+  .italic-heading {
+    font-family: var(--ff-heading);
+    font-style: italic;
   }
 
-  .pkg-editorial .section-header {
-    border-bottom: none;
-  }
-
-  /* List */
+  /* Layout */
   .pkg-editorial__list {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
   }
-
-  /* Each item: full-width row, image + content side by side */
   .pkg-editorial__item {
     display: grid;
     grid-template-columns: 1fr;
     border-top: 1px solid var(--clr-border);
     padding-block: calc(4 * var(--spacing));
     gap: calc(4 * var(--spacing));
-    transition: background-color var(--transition-slow);
   }
-
   .pkg-editorial__item:last-child {
     border-bottom: 1px solid var(--clr-border);
   }
@@ -139,10 +214,8 @@ const {
   @media (min-width: 48em) {
     .pkg-editorial__item {
       grid-template-columns: 1fr 1fr;
-      align-items: center;
+      align-items: start;
     }
-
-    /* Alternate image side each row */
     .pkg-editorial__item:nth-child(even) .pkg-editorial__media {
       order: 2;
     }
@@ -151,32 +224,21 @@ const {
     }
   }
 
-  /* Featured item gets a tinted background */
-  .pkg-editorial__item--featured {
-    background-color: var(--bg-surface);
-    padding-inline: calc(3 * var(--spacing));
-    margin-inline: calc(-3 * var(--spacing));
-  }
-
-  /* Image */
+  /* Media & Badges */
   .pkg-editorial__media {
     position: relative;
-    aspect-ratio: 3 / 2;
+    aspect-ratio: 4 / 3;
     overflow: hidden;
   }
-
   .pkg-editorial__media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-    transition: transform var(--transition-slow);
+    transition: transform 0.6s ease;
   }
-
-  .pkg-editorial__item:hover .pkg-editorial__media img {
-    transform: scale(1.04);
+  .pkg-editorial__item:hover img {
+    transform: scale(1.05);
   }
-
   .pkg-editorial__price {
     position: absolute;
     bottom: 1.5rem;
@@ -187,87 +249,152 @@ const {
   .pkg-editorial__content {
     display: flex;
     flex-direction: column;
-    gap: calc(1.5 * var(--spacing));
-    padding-inline: calc(2 * var(--spacing));
+    gap: 2rem;
   }
-
   .pkg-editorial__meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-
   .pkg-editorial__number {
-    color: var(--txt-light);
-    font-size: var(--fs-h2);
     font-family: var(--ff-heading);
     font-style: italic;
-    opacity: 0.3;
-    letter-spacing: 0;
+    font-size: 2.5rem;
+    opacity: 0.15;
   }
-
+  .pkg-editorial__title {
+    font-family: var(--ff-heading);
+    font-style: italic;
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1;
+  }
   .pkg-editorial__tag {
     color: var(--clr-primary);
   }
 
-  .pkg-editorial__title {
-    font-family: var(--ff-heading);
-    font-style: italic;
-    font-weight: var(--fw-regular);
-    font-size: var(--fs-h1);
-    color: var(--txt-main);
-    line-height: 1.1;
+  /* Specs - Flex Columns */
+  .pkg-editorial__specs {
+    display: flex;
+    gap: 3rem;
+  }
+  .pkg-editorial__spec {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .pkg-editorial__spec svg {
+    color: var(--clr-primary);
+  }
+  .pkg-editorial__spec-info {
+    display: flex;
+    flex-direction: column;
+  }
+  .pkg-editorial__spec-info .label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--txt-light);
+  }
+  .pkg-editorial__spec-info .value {
+    font-size: 0.9rem;
+    font-weight: 500;
   }
 
+  /* Body & Includes */
   .pkg-editorial__body {
-    font-size: var(--fs-body);
     color: var(--txt-muted);
-    line-height: 1.8;
-    max-width: 48ch;
+    line-height: 1.7;
+    max-width: 50ch;
   }
-
-  /* Includes list */
   .pkg-editorial__includes {
     list-style: none;
     padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.625rem;
-    border-top: 1px solid var(--clr-border);
-    padding-top: calc(1.5 * var(--spacing));
+    display: grid;
+    gap: 0.5rem;
   }
-
   .pkg-editorial__include {
     display: flex;
-    align-items: baseline;
     gap: 0.75rem;
-    font-size: var(--fs-small);
+    font-size: 0.85rem;
     color: var(--txt-muted);
-    letter-spacing: 0.05em;
   }
-
   .pkg-editorial__dash {
     color: var(--clr-primary);
-    flex-shrink: 0;
-    opacity: 0.6;
   }
 
-  /* Footer row: price + CTA */
-  .pkg-editorial__footer {
+  /* Accordion Transition */
+  .pkg-editorial__tiers {
+    border-block: 1px solid var(--clr-border);
+  }
+  .pkg-editorial__tiers-toggle {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .pkg-editorial__tiers-toggle .chevron {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .pkg-editorial__tiers-toggle[aria-expanded="true"] .chevron {
+    transform: rotate(180deg);
+  }
+
+  .pkg-editorial__tiers-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .pkg-editorial__tiers-toggle[aria-expanded="true"]
+    + .pkg-editorial__tiers-panel {
+    grid-template-rows: 1fr;
+  }
+  .pkg-editorial__tiers-inner {
+    overflow: hidden;
+  }
+
+  /* Tier List Styling */
+  .pkg-editorial__tiers-list {
+    list-style: none;
+    padding: 0 0 1.5rem 0;
+    margin: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .pkg-editorial__tier {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: var(--bg-surface);
+    border-radius: 4px;
+  }
+  .tier-label {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--spacing);
-    flex-wrap: wrap;
-    padding-top: calc(1.5 * var(--spacing));
-    border-top: 1px solid var(--clr-border);
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--txt-light);
+  }
+  .tier-price {
+    font-family: var(--ff-heading);
+    font-style: italic;
+    font-size: 1.25rem;
   }
 
+  /* Footer */
+  .pkg-editorial__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   .pkg-editorial__price-inline {
     font-family: var(--ff-heading);
     font-style: italic;
-    font-size: var(--fs-h3);
-    color: var(--txt-main);
+    font-size: 1.5rem;
   }
 </style>

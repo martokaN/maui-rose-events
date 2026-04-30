@@ -1,0 +1,129 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Service {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+interface Props {
+  label?: string;
+  heading?: string;
+  services?: Service[];
+}
+
+const {
+  label = "Our Services",
+  heading = "Tailored Experiences",
+  services = [
+    {
+      icon: "lucide:sparkles",
+      title: "Premium Picnic Setup",
+      description:
+        "Curated luxury picnic experiences with premium furnishings, floral arrangements, and gourmet treats.",
+    },
+    {
+      icon: "lucide:heart",
+      title: "Small Weddings & Elopements",
+      description:
+        "Intimate wedding styling with attention to detail, from ceremony setups to reception décor.",
+    },
+    {
+      icon: "lucide:calendar",
+      title: "Special Events",
+      description:
+        "Custom styling for proposals, anniversaries, corporate gatherings, and other celebrations.",
+    },
+  ],
+} = Astro.props;
+---
+
+<section class="services-grid padding-block-lg">
+  <div class="container">
+    <div class="services-grid__header text-center">
+      {label && <span class="label">{label}</span>}
+      <h2 class="services-grid__heading serif">{heading}</h2>
+    </div>
+
+    <div class="services-grid__grid">
+      {
+        services.map((service) => (
+          <article class="services-grid__card card">
+            <div class="services-grid__icon">
+              <Icon name={service.icon} size="2.5rem" />
+            </div>
+            <h3 class="services-grid__title">{service.title}</h3>
+            <p class="services-grid__description">{service.description}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .services-grid {
+    background-color: var(--bg-surface);
+  }
+
+  .services-grid__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: calc(4 * var(--spacing));
+    align-items: center;
+  }
+
+  .services-grid__heading {
+    font-size: var(--fs-h2);
+    line-height: 1.1;
+    color: var(--txt-main);
+  }
+
+  .services-grid__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: calc(3 * var(--spacing)); /* gap-12 */
+  }
+
+  @media (min-width: 48em) {
+    .services-grid__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .services-grid__card {
+    background-color: var(--bg-surface-alt);
+    border: 1px solid var(--clr-border);
+    padding: calc(2.5 * var(--spacing));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: border-color var(--transition-slow);
+  }
+
+  .services-grid__card:hover {
+    border-color: var(--clr-secondary);
+  }
+
+  .services-grid__icon {
+    margin-bottom: calc(1.5 * var(--spacing));
+    color: var(--clr-primary);
+  }
+
+  .services-grid__title {
+    font-family: var(--ff-heading);
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-regular);
+    color: var(--txt-main);
+    margin-bottom: 1rem;
+  }
+
+  .services-grid__description {
+    font-size: var(--fs-body);
+    line-height: 1.7;
+    color: var(--txt-muted);
+  }
+</style>
