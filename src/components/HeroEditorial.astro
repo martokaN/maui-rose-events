@@ -1,11 +1,12 @@
 ---
+import { Image } from "astro:assets";
+
 interface Props {
   label: string;
   heading: string;
   body: string;
-  image: string;
+  image: ImageMetadata;
   imageAlt: string;
-  /** Flip image to the left, text to the right */
   flip?: boolean;
   compact?: boolean;
 }
@@ -21,7 +22,7 @@ const {
 } = Astro.props;
 ---
 
-<section class:list={["hero-editorial", { "hero-editorial--flip": flip }]}>
+<section class:list={["padding-block-md", { "hero-editorial--flip": flip }]}>
   <div class="hero-editorial__inner container">
     <div class="hero-editorial__text">
       <span class="label">{label}</span>
@@ -35,22 +36,21 @@ const {
         { "hero-editorial__media--compact": compact },
       ]}
     >
-      <img src={image} alt={imageAlt} class="hero-editorial__img" />
+      <Image src={image} alt={imageAlt} class="hero-editorial__img" />
     </div>
   </div>
 </section>
 
 <style>
-  .hero-editorial {
-    padding-top: calc(var(--nav-height) + var(--section-gap));
-    padding-bottom: var(--section-gap);
+  .padding-block-md {
+    padding-top: calc(var(--nav-height) + 4 * var(--spacing));
   }
 
   .hero-editorial__inner {
     display: grid;
     grid-template-columns: 1fr;
     gap: calc(3 * var(--spacing));
-    align-items: end;
+    align-items: center;
   }
 
   @media (min-width: 48em) {
@@ -102,7 +102,7 @@ const {
   }
 
   .hero-editorial__media--compact {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 4 / 3;
     overflow: hidden;
   }
 

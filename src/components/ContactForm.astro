@@ -1,80 +1,62 @@
 ---
-import { getCollection } from "astro:content";
-
-interface Props {
-  heading?: string;
-  successMessage?: string;
-  /** Netlify, Formspree URL, or your own endpoint */
-  action?: string;
-}
-
-const { heading = "Inquiry Form", action = "/api/contact" } = Astro.props;
-const packages = await getCollection("pricePackages");
+// Your frontmatter if needed
 ---
 
 <section id="inquiry-form" class="contact-form-section">
   <div class="contact-form-section__inner container--narrow">
     <div class="contact-form-section__header">
-      <h2 class="contact-form-section__heading">{heading}</h2>
+      <h2 class="contact-form-section__heading">Inquiry Form</h2>
       <div class="contact-form-section__rule" aria-hidden="true"></div>
     </div>
 
     <form
       class="contact-form"
-      action={action}
+      action=""
       method="POST"
       id="contact-form"
       novalidate
     >
+      <!-- Honeypot field for spam prevention -->
+      <div class="hp-field" aria-hidden="true">
+        <label for="hp-website">Website</label>
+        <input
+          id="hp-website"
+          name="_honeypot"
+          type="text"
+          tabindex="-1"
+          autocomplete="off"
+        />
+      </div>
+
       <div class="contact-form__grid">
+        <!-- Row 1: Name | Surname -->
         <div class="form-field">
-          <label for="event-type">Event Type</label>
-          <select id="event-type" name="event_type" required>
-            {
-              packages.map((pkg) => (
-                <option value="ahoj">{pkg.data.title}</option>
-              ))
-            }
-            <!-- <option value="" disabled selected>Select an option</option>
-            <option value="picnic">Picnic Experience</option>
-            <option value="wedding">Wedding Celebration</option>
-            <option value="proposal">Proposal Setup</option>
-            <option value="party">Garden Party</option>
-            <option value="other">Other</option> -->
-          </select>
-        </div>
-
-        <div class="form-field">
-          <label for="event-date">Preferred Date</label>
-          <input type="date" id="event-date" name="event_date" />
-        </div>
-
-        <div class="form-field">
-          <label for="guests">Number of Guests</label>
-          <input
-            type="number"
-            id="guests"
-            name="guests"
-            min="1"
-            max="500"
-            placeholder="e.g. 12"
-          />
-        </div>
-
-        <div class="form-field">
-          <label for="name">Your Name</label>
+          <label for="name">Name</label>
           <input
             type="text"
             id="name"
             name="name"
             required
-            placeholder="Full name"
-            autocomplete="name"
+            placeholder="Your first name"
+            autocomplete="given-name"
           />
         </div>
 
-        <div class="form-field form-field--full">
-          <label for="email">Email Address</label>
+        <div class="form-field">
+          <label for="surname">Surname</label>
+          <input
+            type="text"
+            id="surname"
+            name="surname"
+            required
+            placeholder="Your last name"
+            autocomplete="family-name"
+          />
+        </div>
+
+        <!-- Row 2: Email | Phone -->
+        <div class="form-field">
+          <label for="email">E-mail</label>
           <input
             type="email"
             id="email"
@@ -85,53 +67,125 @@ const packages = await getCollection("pricePackages");
           />
         </div>
 
+        <div class="form-field">
+          <label for="phone">Phone Number</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="808-555-0123"
+            autocomplete="tel"
+          />
+        </div>
+
+        <!-- Row 3: Date & Time (full width) -->
         <div class="form-field form-field--full">
-          <label for="message">Share Your Vision</label>
-          <textarea
-            id="message"
-            name="message"
-            rows="4"
-            placeholder="Tell us about the atmosphere you wish to create..."
-          ></textarea>
+          <label for="appointment">Date &amp; Time of Appointment</label>
+          <input
+            type="datetime-local"
+            id="appointment"
+            name="appointment"
+            required
+          />
         </div>
       </div>
 
       <div class="contact-form__footer">
-        <button type="submit" class="btn btn-primary contact-form__submit">
+        <button
+          type="submit"
+          class="btn btn-primary contact-form__submit"
+          id="submit-btn"
+        >
           Send Inquiry
           <span class="contact-form__arrow" aria-hidden="true">→</span>
         </button>
         <p class="contact-form__privacy label">
           By booking, you agree to our <a href="/policy"
-            >booking & cancellation policy.</a
+            >booking &amp; cancellation policy.</a
           >
         </p>
-      </div>
 
-      <!-- Success / error messages -->
-      <p
-        class="contact-form__success"
-        id="form-success"
-        aria-live="polite"
-        hidden
-      >
-        Thank you — we'll be in touch within 48 hours.
-      </p>
-      <p class="contact-form__error" id="form-error" aria-live="polite" hidden>
-        Something went wrong. Please try again or email us directly.
-      </p>
+        <!-- Success / error messages -->
+        <p
+          class="contact-form__success"
+          id="form-success"
+          aria-live="polite"
+          hidden
+        >
+          Thank you, we'll be in touch within 48 hours.
+        </p>
+        <p
+          class="contact-form__error"
+          id="form-error"
+          aria-live="polite"
+          hidden
+        >
+          Something went wrong. Please try again or email us directly.
+        </p>
+      </div>
     </form>
   </div>
 </section>
+
+<script>
+  import { actions } from "astro:actions";
+
+  const form = document.getElementById("contact-form") as HTMLFormElement;
+  const submitBtn = document.getElementById("submit-btn") as HTMLButtonElement;
+  const successMsg = document.getElementById("form-success");
+  const errorMsg = document.getElementById("form-error");
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.innerText = "Sending...";
+
+    const formData = new FormData(form);
+    const name = formData.get("name") as string;
+    const surname = formData.get("surname") as string;
+    const email = formData.get("email") as string;
+    const phone = formData.get("phone") as string;
+    const appointment = formData.get("appointment") as string;
+
+    // Extract URL parameters safely (Bulletproof version)
+    const urlParams = new URLSearchParams(window.location.search);
+    const pkg = urlParams.get("package") || "None specified";
+    const rawAddons = urlParams.get("addons");
+    let addons = "None specified";
+
+    if (rawAddons) {
+      addons = rawAddons.split(",").join(", ");
+    }
+
+    const { error } = await actions.sendEmail({
+      name: name,
+      surname: surname,
+      email: email,
+      phone: phone || "",
+      appointment: appointment,
+      package: pkg,
+      addons: addons,
+      _honeypot: formData.get("_honeypot") as string || "",
+    });
+
+    submitBtn.disabled = false;
+    submitBtn.innerText = "Send Inquiry →";
+
+    if (error) {
+      errorMsg!.hidden = false;
+      successMsg!.hidden = true;
+    } else {
+      successMsg!.hidden = false;
+      errorMsg!.hidden = true;
+      form.reset();
+    }
+  });
+</script>
 
 <style>
   .contact-form-section {
     background-color: var(--bg-surface);
     padding-block: var(--section-gap);
-  }
-
-  .contact-form-section__inner {
-    /* container--narrow from global.css */
   }
 
   .contact-form-section__header {
@@ -155,6 +209,17 @@ const packages = await getCollection("pricePackages");
     background-color: var(--clr-border);
   }
 
+  /* Honeypot field - hidden from humans but visible to bots */
+  .hp-field {
+    position: absolute !important;
+    left: -9999px !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+    width: 0 !important;
+  }
+
   /* Form grid — 2 cols on desktop */
   .contact-form__grid {
     display: grid;
@@ -170,6 +235,31 @@ const packages = await getCollection("pricePackages");
 
   .form-field--full {
     grid-column: 1 / -1;
+  }
+
+  /* Placeholder — consistent muted look across all fields */
+  .form-field input::placeholder,
+  .form-field textarea::placeholder {
+    color: var(--txt-light);
+    opacity: 1;
+  }
+
+  /* datetime-local — muted when empty, normal when filled */
+  .form-field input[type="datetime-local"]:not(:valid) {
+    color: var(--txt-light);
+  }
+
+  .form-field input[type="datetime-local"]:valid {
+    color: var(--txt-main);
+  }
+
+  /* Chromium exposes an internal pseudo-element for the placeholder text */
+  .form-field input[type="datetime-local"]::-webkit-datetime-edit {
+    color: var(--txt-light);
+  }
+
+  .form-field input[type="datetime-local"]:valid::-webkit-datetime-edit {
+    color: var(--txt-main);
   }
 
   /* Submit row */
@@ -226,45 +316,3 @@ const packages = await getCollection("pricePackages");
     font-size: var(--fs-body);
   }
 </style>
-
-<script>
-  const form = document.getElementById(
-    "contact-form",
-  ) as HTMLFormElement | null;
-  const successMsg = document.getElementById("form-success");
-  const errorMsg = document.getElementById("form-error");
-
-  form?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const submitBtn = form.querySelector<HTMLButtonElement>("[type=submit]");
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Sending…";
-    }
-
-    try {
-      const res = await fetch(form.action, {
-        method: "POST",
-        body: new FormData(form),
-        headers: { Accept: "application/json" },
-      });
-
-      if (res.ok) {
-        form.reset();
-        successMsg?.removeAttribute("hidden");
-        errorMsg?.setAttribute("hidden", "");
-      } else {
-        throw new Error("Server error");
-      }
-    } catch {
-      errorMsg?.removeAttribute("hidden");
-      successMsg?.setAttribute("hidden", "");
-    } finally {
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = `Send Inquiry <span class="contact-form__arrow" aria-hidden="true">→</span>`;
-      }
-    }
-  });
-</script>

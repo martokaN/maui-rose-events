@@ -26,6 +26,7 @@ const { title, description } = Astro.props;
     <Font cssVariable="--font-noto-serif" />
     <Font cssVariable="--font-work-sans" />
     <title>{title} | Maui Rose Events</title>
+    <link rel="canonical" href={Astro.url} />
     <ClientRouter />
   </head>
   <body>

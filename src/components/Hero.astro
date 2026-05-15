@@ -1,19 +1,13 @@
 ---
-interface Props {
-  tagline?: string;
-  heading: string;
+import { Image } from "astro:assets";
+import image from "../assets/hero/BKR03026-Edit-2.jpg";
 
-  /** Path to hero image in /public */
-  image: string;
-  imageAlt: string;
-}
-
-const { tagline = "Est. 2018", heading, image, imageAlt } = Astro.props;
+const { tagline = "Est. 2018", heading } = Astro.props;
 ---
 
 <section class="hero">
   <div class="hero__media">
-    <img src={image} alt={imageAlt} class="hero__img" />
+    <Image src={image} alt="test" class="hero__img" />
     <div class="hero__overlay"></div>
   </div>
 

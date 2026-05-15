@@ -1,21 +1,8 @@
 ---
-interface Props {
-  label?: string;
-  heading?: string;
-  image1: string;
-  image1Alt: string;
-  image2: string;
-  image2Alt: string;
-}
+import { Image } from "astro:assets";
 
-const {
-  label = "The Process With Picknics",
-  heading = "How it <em>works</em>",
-  image1,
-  image1Alt,
-  image2,
-  image2Alt,
-} = Astro.props;
+import image1 from "../assets/how-it-works/3914.png";
+import image2 from "../assets/how-it-works/BKR03323-Edit.jpg";
 
 const steps = [
   {
@@ -40,8 +27,8 @@ const steps = [
   <div class="how__inner container">
     <!-- Steps column -->
     <div class="how__steps">
-      <span class="label">{label}</span>
-      <h2 class="how__heading" set:html={heading} />
+      <span class="label">The Process With Picknics</span>
+      <h2 class="how__heading">How it works</h2>
 
       <ol class="how__list" role="list">
         {
@@ -61,10 +48,10 @@ const steps = [
     <!-- Images column -->
     <div class="how__media">
       <div class="how__img-top">
-        <img src={image1} alt={image1Alt} />
+        <Image src={image1} alt="test" />
       </div>
       <div class="how__img-bottom">
-        <img src={image2} alt={image2Alt} />
+        <Image src={image2} alt="test" />
       </div>
     </div>
   </div>

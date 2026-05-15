@@ -1,0 +1,99 @@
+---
+
+---
+
+<!-- Studio location strip -->
+<section class="studio">
+  <div class="studio__inner">
+    <div class="studio__info">
+      <h3 class="studio__heading">Our Studio</h3>
+      <address class="studio__address">
+        <p>422 Linden Avenue</p>
+        <p>Estate Row, CA 90210</p>
+        <br />
+        <a href="mailto:hello@gardentable.studio">hello@gardentable.studio</a>
+        <br />
+        <a href="tel:+15550123456">+1 (555) 012 3456</a>
+      </address>
+      <p class="studio__hours label">Mon – Fri &nbsp; 9am – 6pm</p>
+    </div>
+
+    <div class="studio__media">
+      <img
+        src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1200&q=80"
+        alt="Calm, minimal studio interior with natural light and botanical details"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .studio {
+    padding-block: var(--section-gap);
+    border-top: 1px solid var(--clr-border);
+  }
+
+  .studio__inner {
+    width: min(1280px, 100% - 2 * var(--spacing));
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 400px;
+  }
+
+  @media (min-width: 48em) {
+    .studio__inner {
+      grid-template-columns: 1fr 2fr;
+    }
+  }
+
+  .studio__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: calc(1.5 * var(--spacing));
+    padding: calc(3 * var(--spacing));
+    border-right: 1px solid var(--clr-border);
+  }
+
+  .studio__heading {
+    font-family: var(--ff-heading);
+    font-style: italic;
+    font-weight: var(--fw-regular);
+    font-size: var(--fs-h2);
+    color: var(--txt-main);
+  }
+
+  .studio__address {
+    font-style: normal;
+    font-size: var(--fs-small);
+    color: var(--txt-muted);
+    line-height: 2;
+  }
+
+  .studio__address a {
+    color: var(--txt-muted);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .studio__address a:hover {
+    color: var(--clr-primary);
+  }
+
+  .studio__hours {
+    color: var(--txt-light);
+    max-width: none;
+  }
+
+  .studio__media {
+    overflow: hidden;
+  }
+
+  .studio__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+</style>

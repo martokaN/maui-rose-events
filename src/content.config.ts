@@ -23,9 +23,19 @@ const pricePackages = defineCollection({
       capacity: z.string(),
       duration: z.string().optional(),
       includes: z.array(z.string()),
-      featured: z.boolean().default(false),
       order: z.number().default(0),
     }),
 });
 
-export const collections = { pricePackages };
+const addons = defineCollection({
+  loader: glob({ base: "./src/content/addons", pattern: "**/*.yaml" }),
+  schema: z.array(
+    z.object({
+      name: z.string(),
+      note: z.string().optional(),
+      price: z.string(),
+    }),
+  ),
+});
+
+export const collections = { pricePackages, addons };

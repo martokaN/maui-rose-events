@@ -1,0 +1,23 @@
+image: ./image.jpg
+imageAlt: Luxury picnic setup with elegant décor
+price: Starting at $300
+priceTiers:
+  - guests: "4 people"
+    amount: "$400"
+  - guests: "6 people"
+    amount: "$550"
+  - guests: "Each additional (over 6)"
+    amount: "$50"
+title: Luxury Picnic Setup
+subtitle: Elegant & Professional
+body: "A luxury picnic setup designed with elegant details, premium décor, and a beautifully styled setting crafted to impress for any occasion."
+capacity: 4-6+ people
+duration: 2 hours
+includes:
+  - Local fresh flowers
+  - Charcuterie board
+  - A carafe of still & sparkling water
+  - Fresh fruits
+  - Fresh juice
+  - Bottle of bubbles
+order: 2

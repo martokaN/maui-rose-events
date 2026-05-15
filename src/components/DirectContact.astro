@@ -1,0 +1,198 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  heading?: string;
+}
+
+const { heading = "Contact us Directly" } = Astro.props;
+
+const contactItems = [
+  {
+    icon: "lucide:phone",
+    label: "Phone",
+    value: "+1 (908) 494-1957",
+    href: "tel:+19084941957",
+  },
+  {
+    icon: "lucide:phone",
+    label: "Phone 2",
+    value: "+1 (949) 617-7538",
+    href: "tel:+19496177538",
+  },
+  {
+    icon: "lucide:mail",
+    label: "Email",
+    value: "mauiroseevents@gmail.com",
+    href: "mailto:mauiroseevents@gmail.com",
+  },
+  {
+    icon: "lucide:instagram",
+    label: "Instagram",
+    value: "@mauiroseevents",
+    href: "https://instagram.com/mauiroseevents",
+  },
+];
+---
+
+<section class="direct-contact-section">
+  <div class="direct-contact-section__inner container--narrow">
+    <div class="direct-contact-section__header">
+      <span class="label">Get in touch</span>
+      <h2 class="direct-contact-section__heading">{heading}</h2>
+      <div class="direct-contact-section__rule" aria-hidden="true"></div>
+    </div>
+
+    <div class="direct-contact__items">
+      {
+        contactItems.map((item) => (
+          <a
+            href={item.href}
+            class="direct-contact__item"
+            aria-label={`Contact us via ${item.label}`}
+            target={item.icon === "lucide:instagram" ? "_blank" : undefined}
+            rel={
+              item.icon === "lucide:instagram"
+                ? "noopener noreferrer"
+                : undefined
+            }
+          >
+            <div class="direct-contact__icon-wrap" aria-hidden="true">
+              <Icon
+                name={item.icon}
+                class="direct-contact__icon"
+                aria-hidden="true"
+                stroke-width={1}
+              />
+            </div>
+            <div class="direct-contact__content">
+              <span class="label direct-contact__label">{item.label}</span>
+              <span class="direct-contact__value">{item.value}</span>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .direct-contact-section {
+    background-color: var(--bg-surface-alt);
+    border-top: 1px solid var(--clr-border);
+    padding-block: var(--section-gap);
+  }
+
+  .direct-contact-section__header {
+    text-align: center;
+    margin-bottom: calc(3 * var(--spacing));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing);
+  }
+
+  .direct-contact-section__heading {
+    font-family: var(--ff-heading);
+    font-style: italic;
+    font-weight: var(--fw-regular);
+    font-size: var(--fs-h2);
+  }
+
+  .direct-contact-section__rule {
+    width: 3rem;
+    height: 1px;
+    background-color: var(--clr-border);
+  }
+
+  .direct-contact__items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--spacing);
+  }
+
+  .direct-contact__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(1.25 * var(--spacing));
+    padding: calc(2 * var(--spacing)) calc(1.5 * var(--spacing));
+    background-color: var(--bg-surface);
+    border: 1px solid var(--clr-border);
+    color: var(--txt-main);
+    text-decoration: none;
+    text-align: center;
+    transition:
+      border-color var(--transition-fast),
+      background-color var(--transition-fast);
+    outline: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .direct-contact__item:hover,
+  .direct-contact__item:focus-visible {
+    border-color: var(--clr-secondary);
+    background-color: var(--bg-main);
+    outline: none;
+  }
+
+  .direct-contact__item:focus-visible {
+    outline: 2px solid var(--clr-primary);
+    outline-offset: 2px;
+  }
+
+  .direct-contact__item:hover::after,
+  .direct-contact__item:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .direct-contact__icon-wrap {
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: border-color var(--transition-fast);
+  }
+
+  .direct-contact__item:hover .direct-contact__icon-wrap,
+  .direct-contact__item:focus-visible .direct-contact__icon-wrap {
+    border-color: var(--clr-secondary);
+  }
+
+  .direct-contact__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--clr-primary);
+    transition: color var(--transition-fast);
+  }
+
+  .direct-contact__item:hover .direct-contact__icon,
+  .direct-contact__item:focus-visible .direct-contact__icon {
+    color: var(--clr-accent);
+  }
+
+  .direct-contact__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .direct-contact__label {
+    color: var(--clr-secondary);
+  }
+
+  .direct-contact__value {
+    font-size: var(--fs-small);
+    color: var(--txt-muted);
+    line-height: 1.4;
+    display: block;
+    inline-size: 100%;
+    overflow-wrap: break-word;
+    word-break: normal;
+  }
+</style>
