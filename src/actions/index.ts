@@ -115,7 +115,7 @@ export const server = {
         .join("\n");
 
       // Sanitize headers to prevent injection
-      const subject = `Inquiry: ${sanitizeHeader(input.name)} ${sanitizeHeader(input.surname)} — ${sanitizeHeader(input.package)}`;
+      const subject = `Inquiry: ${sanitizeHeader(input.name)} ${sanitizeHeader(input.surname)} - ${sanitizeHeader(input.package)}`;
       const plainText = [
         `Inquiry from ${input.name} ${input.surname}`,
         `Email: ${input.email}`,

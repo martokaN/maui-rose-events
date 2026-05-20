@@ -1,22 +1,33 @@
 ---
-interface Photo {
-  src: string;
-  alt: string;
-}
+import { Image } from "astro:assets";
+
+import img2972 from "../assets/instagram/2972.jpg";
+import img3912 from "../assets/instagram/3912.png";
+import img3984 from "../assets/instagram/3984.jpg";
+import imgBKR from "../assets/instagram/BKR03136-Edit.jpg";
+import image1 from "../assets/instagram/image1.jpg";
+import image2 from "../assets/instagram/image2.jpg";
 
 interface Props {
   heading?: string;
   handle?: string;
   profileUrl?: string;
-  photos: Photo[];
 }
 
 const {
   heading = "Follow our Instagram",
   handle = "@MauiRoseEvents",
   profileUrl = "https://www.instagram.com/mauiroseevents/",
-  photos,
 } = Astro.props;
+
+const instagramPhotos = [
+  { src: imgBKR, alt: "" },
+  { src: image1, alt: "" },
+  { src: image2, alt: "" },
+  { src: img3984, alt: "" },
+  { src: img3912, alt: "" },
+  { src: img2972, alt: "" },
+];
 ---
 
 <section class="insta">
@@ -31,12 +42,17 @@ const {
       Follow {handle}
     </a>
   </div>
-
   <ul class="insta__grid" role="list">
     {
-      photos.map(({ src, alt }) => (
+      instagramPhotos.map(({ src, alt }) => (
         <li class="insta__cell">
-          <img src={src} alt={alt} loading="lazy" />
+          <Image
+            src={src}
+            alt={alt}
+            fit="cover"
+            sizes="(min-width: 64em) 16vw, (min-width: 36em) 33vw, 50vw"
+            class="insta__img"
+          />
         </li>
       ))
     }
@@ -47,22 +63,18 @@ const {
   .insta {
     padding-bottom: var(--section-gap);
   }
-
   .insta__header {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     flex-wrap: wrap;
     gap: var(--spacing);
-    /* margin-block: calc(2 * var(--spacing)); */
   }
-
   .insta__heading {
     font-family: var(--ff-heading);
     font-weight: var(--fw-regular);
     font-size: var(--fs-h2);
   }
-
   .insta__grid {
     list-style: none;
     padding: 0;
@@ -71,33 +83,33 @@ const {
     grid-template-columns: repeat(2, 1fr);
     gap: 2px;
   }
-
   @media (min-width: 36em) {
     .insta__grid {
       grid-template-columns: repeat(3, 1fr);
     }
   }
-
   @media (min-width: 64em) {
     .insta__grid {
       grid-template-columns: repeat(6, 1fr);
     }
   }
-
   .insta__cell {
     aspect-ratio: 1;
     overflow: hidden;
+    position: relative;
+    background-color: var(--bg-main);
   }
-
-  .insta__cell img {
+  .insta__cell .insta__img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
     transition: transform var(--transition-slow);
   }
-
-  .insta__cell:hover img {
+  .insta__cell:hover .insta__img {
     transform: scale(1.08);
   }
 </style>

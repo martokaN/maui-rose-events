@@ -6,31 +6,20 @@ import InstagramGrid from "../components/InstagramGrid.astro";
 import CtaBanner from "../components/CtaBanner.astro";
 import ServicesGrid from "../components/ServicesGrid.astro";
 
+import img2972 from "../assets/instagram/2972.jpg";
+import img3912 from "../assets/instagram/3912.png";
+import img3984 from "../assets/instagram/3984.jpg";
+import imgBKR from "../assets/instagram/BKR03136-Edit.jpg";
+import image1 from "../assets/instagram/image1.jpg";
+import image2 from "../assets/instagram/image2.jpg";
+
 const instagramPhotos = [
-  {
-    src: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80",
-    alt: "Close up of a sparkling glass of champagne with a strawberry",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=600&q=80",
-    alt: "Couple laughing together at a candlelit outdoor picnic",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=600&q=80",
-    alt: "Rustic bread loaf and grapes arranged on a linen cloth",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1590166774851-bc49b23a18fe?q=80&w=989&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    alt: "Elegant cheese board with figs, honey and seasonal fruits",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1578863950596-a74dfe8267b5?q=80&w=1980&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    alt: "Vintage silver cutlery laid on an antique white plate",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80",
-    alt: "Sun setting over a beautifully curated outdoor garden event",
-  },
+  { src: imgBKR, alt: "" },
+  { src: image1, alt: "" },
+  { src: image2, alt: "" },
+  { src: img3984, alt: "" },
+  { src: img3912, alt: "" },
+  { src: img2972, alt: "" },
 ];
 ---
 
@@ -53,7 +42,6 @@ const instagramPhotos = [
     heading="Follow our Instagram"
     handle="@MauiRoseEvents"
     profileUrl="https://instagram.com"
-    photos={instagramPhotos}
   />
 
   <CtaBanner />

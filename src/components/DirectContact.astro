@@ -10,21 +10,22 @@ const { heading = "Contact us Directly" } = Astro.props;
 const contactItems = [
   {
     icon: "lucide:phone",
-    label: "Phone",
+    label: "Mobile 1",
     value: "+1 (908) 494-1957",
     href: "tel:+19084941957",
   },
   {
     icon: "lucide:phone",
-    label: "Phone 2",
+    label: "Mobile 2",
     value: "+1 (949) 617-7538",
     href: "tel:+19496177538",
   },
   {
     icon: "lucide:mail",
     label: "Email",
-    value: "mauiroseevents@gmail.com",
+    value: "mauiroseevents<wbr>@gmail.com",
     href: "mailto:mauiroseevents@gmail.com",
+    html: true,
   },
   {
     icon: "lucide:instagram",
@@ -62,13 +63,20 @@ const contactItems = [
                 name={item.icon}
                 class="direct-contact__icon"
                 aria-hidden="true"
-                stroke-width={1}
+                stroke-width={1.5}
               />
             </div>
             <div class="direct-contact__content">
               <span class="label direct-contact__label">{item.label}</span>
-              <span class="direct-contact__value">{item.value}</span>
+              {item.html ? (
+                <span class="direct-contact__value" set:html={item.value} />
+              ) : (
+                <span class="direct-contact__value">{item.value}</span>
+              )}
             </div>
+            <span class="direct-contact__arrow" aria-hidden="true">
+              ↗
+            </span>
           </a>
         ))
       }
@@ -116,7 +124,8 @@ const contactItems = [
     flex-direction: column;
     align-items: center;
     gap: calc(1.25 * var(--spacing));
-    padding: calc(2 * var(--spacing)) calc(1.5 * var(--spacing));
+    padding: calc(2 * var(--spacing)) calc(1.5 * var(--spacing))
+      calc(1.5 * var(--spacing));
     background-color: var(--bg-surface);
     border: 1px solid var(--clr-border);
     color: var(--txt-main);
@@ -124,16 +133,19 @@ const contactItems = [
     text-align: center;
     transition:
       border-color var(--transition-fast),
-      background-color var(--transition-fast);
+      background-color var(--transition-fast),
+      transform var(--transition-fast),
+      box-shadow var(--transition-fast);
     outline: none;
     position: relative;
-    overflow: hidden;
   }
 
   .direct-contact__item:hover,
   .direct-contact__item:focus-visible {
     border-color: var(--clr-secondary);
     background-color: var(--bg-main);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px -6px rgba(0, 0, 0, 0.1);
     outline: none;
   }
 
@@ -142,36 +154,37 @@ const contactItems = [
     outline-offset: 2px;
   }
 
-  .direct-contact__item:hover::after,
-  .direct-contact__item:focus-visible::after {
-    transform: scaleX(1);
-  }
-
   .direct-contact__icon-wrap {
-    width: 4rem;
-    height: 4rem;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: var(--bg-surface-alt);
+    border: 1px solid var(--clr-border);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    transition: border-color var(--transition-fast);
+    transition:
+      background-color var(--transition-fast),
+      border-color var(--transition-fast);
   }
 
   .direct-contact__item:hover .direct-contact__icon-wrap,
   .direct-contact__item:focus-visible .direct-contact__icon-wrap {
-    border-color: var(--clr-secondary);
+    background-color: var(--clr-primary);
+    border-color: var(--clr-primary);
   }
 
   .direct-contact__icon {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 1.125rem;
+    height: 1.125rem;
     color: var(--clr-primary);
     transition: color var(--transition-fast);
   }
 
   .direct-contact__item:hover .direct-contact__icon,
   .direct-contact__item:focus-visible .direct-contact__icon {
-    color: var(--clr-accent);
+    color: var(--bg-surface);
   }
 
   .direct-contact__content {
@@ -191,8 +204,24 @@ const contactItems = [
     color: var(--txt-muted);
     line-height: 1.4;
     display: block;
-    inline-size: 100%;
     overflow-wrap: break-word;
     word-break: normal;
+  }
+
+  .direct-contact__arrow {
+    font-size: 0.75rem;
+    color: var(--clr-secondary);
+    margin-top: auto;
+    opacity: 0;
+    transform: translate(-2px, 2px);
+    transition:
+      opacity var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .direct-contact__item:hover .direct-contact__arrow,
+  .direct-contact__item:focus-visible .direct-contact__arrow {
+    opacity: 1;
+    transform: translate(0, 0);
   }
 </style>

@@ -1,0 +1,224 @@
+---
+import Layout from "../layouts/Layout.astro";
+import HeroEditorial from "../components/HeroEditorial.astro";
+import ValueCard from "../components/ValueCard.astro";
+import TestimonialStrip from "../components/TestimonialStrip.astro";
+import CtaBanner from "../components/CtaBanner.astro";
+
+const values = [
+  {
+    icon: "eco",
+    title: "Radical Seasonality",
+    body: "We source 90% of our florals from local growers within 50 miles. By working with nature's rhythm, every arrangement is a snapshot of time and place.",
+  },
+  {
+    icon: "architecture",
+    title: "Tactile Artistry",
+    body: "From hand-torn silk ribbons to custom ceramics, we prioritise materials that beg to be touched. Every element is chosen for its sensory narrative.",
+  },
+  {
+    icon: "all_inclusive",
+    title: "Sustainable Legacy",
+    body: "We operate with a zero-floral-foam policy. Beauty should never come at the cost of the earth that sustains it. Our designs are as kind as they are elegant.",
+  },
+];
+---
+
+<Layout
+  title="Our Story"
+  description="The story behind The Garden Table — our philosophy, values, and the people who make it all happen."
+>
+  <HeroEditorial
+    label="Our Philosophy"
+    heading="Cultivating beauty in the <em>quiet moments</em> of life."
+    body="The Garden Table was born from a simple observation: that the most profound connections happen when we slow down. What began as a small botanical workshop has blossomed into a full-service floral and event design studio."
+    image="https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=1200&q=80"
+    imageAlt="Close up of an artisanal local floral arrangement with wildflowers and greenery"
+    flip={true}
+  />
+
+  <!-- Founder section -->
+  <section class="founder">
+    <div class="founder__inner">
+      <div class="founder__media">
+        <img
+          src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=900&q=80"
+          alt="Portrait of founder Elowen Thorne in a sunlit garden"
+        />
+      </div>
+
+      <div class="founder__text">
+        <span class="label">Meet the Founder</span>
+        <h2 class="founder__name">Elowen Thorne</h2>
+        <blockquote class="founder__quote">
+          <p>
+            "My grandmother always said that a table set with intention is a
+            silent prayer of welcome. I carry that philosophy into every
+            wedding, every editorial, and every home we touch."
+          </p>
+          <cite>— Elowen Thorne, Creative Director</cite>
+        </blockquote>
+        <p class="founder__bio">
+          Elowen founded The Garden Table in 2018 after a decade working in
+          editorial floral design across London and Paris. Her work has been
+          featured in Kinfolk, Vogue Living, and The World of Interiors. She
+          lives in the countryside with her husband, two children, and a very
+          large kitchen garden.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="values">
+    <div class="values__inner">
+      <div class="values__header">
+        <span class="label">The Roots</span>
+        <h2 class="values__heading">What guides our hand</h2>
+      </div>
+      <div class="values__grid">
+        {values.map((value) => <ValueCard {...value} />)}
+      </div>
+    </div>
+  </section>
+
+  <TestimonialStrip
+    quote="Working with The Garden Table felt less like hiring a vendor and more like collaborating with an artist who genuinely cared about our story."
+    author="Clara & Tom Whitfield"
+    location="Somerset"
+  />
+
+  <CtaBanner
+    heading="Ready to set <em>your</em> table?"
+    body="We'd love to hear about your vision. Every inquiry is personal and receives our full attention."
+    buttonLabel="Begin the Journey"
+    buttonHref="/contact"
+  />
+</Layout>
+
+<!-- Material Symbols for ValueCard icons -->
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+/>
+
+<style>
+  /* Founder section */
+  .founder {
+    padding-block: var(--section-gap);
+  }
+
+  .founder__inner {
+    width: min(1280px, 100% - 2 * var(--spacing));
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: calc(4 * var(--spacing));
+    align-items: center;
+  }
+
+  @media (min-width: 48em) {
+    .founder__inner {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .founder__media {
+    aspect-ratio: 1;
+    overflow: hidden;
+    filter: grayscale(20%);
+    transition: filter var(--transition-slow);
+  }
+
+  .founder__media:hover {
+    filter: grayscale(0%);
+  }
+
+  .founder__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .founder__text {
+    display: flex;
+    flex-direction: column;
+    gap: calc(1.5 * var(--spacing));
+  }
+
+  .founder__name {
+    font-family: var(--ff-heading);
+    font-style: italic;
+    font-weight: var(--fw-regular);
+    font-size: var(--fs-h1);
+    color: var(--txt-main);
+  }
+
+  .founder__quote {
+    border-left: 2px solid var(--clr-primary);
+    padding-left: calc(1.5 * var(--spacing));
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .founder__quote p {
+    font-family: var(--ff-heading);
+    font-style: italic;
+    font-size: var(--fs-h3);
+    color: var(--txt-muted);
+    line-height: 1.6;
+    max-width: 100%;
+  }
+
+  .founder__quote cite {
+    font-size: var(--fs-label);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--txt-light);
+    font-style: normal;
+  }
+
+  .founder__bio {
+    font-size: var(--fs-body);
+    color: var(--txt-muted);
+    line-height: 1.7;
+    max-width: 100%;
+  }
+
+  /* Values section */
+  .values {
+    background-color: var(--bg-surface);
+    padding-block: var(--section-gap);
+  }
+
+  .values__inner {
+    width: min(1280px, 100% - 2 * var(--spacing));
+    margin-inline: auto;
+  }
+
+  .values__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: calc(3 * var(--spacing));
+  }
+
+  .values__heading {
+    font-family: var(--ff-heading);
+    font-weight: var(--fw-regular);
+  }
+
+  .values__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: calc(1.5 * var(--spacing));
+  }
+
+  @media (min-width: 48em) {
+    .values__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
