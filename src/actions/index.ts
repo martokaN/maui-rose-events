@@ -74,7 +74,7 @@ export const server = {
       const addonsEscaped = escapeHtml(input.addons);
 
       const field = (label: string, value: string, color = "#2a2d32") =>
-        `<div style="background:#f5f4f1; border-radius:8px; padding:12px 14px;">` +
+        `<div style="background:#f5f4f1; border-radius:8px; padding:12px 14px; margin-bottom:10px;">` +
         `<p style="margin:0 0 2px; font-size:11px; color:#6b6f76; letter-spacing:0.06em; text-transform:uppercase;">${label}</p>` +
         `<p style="margin:0; font-size:15px; color:${color}; font-weight:500;">${value}</p>` +
         `</div>`;
@@ -90,7 +90,7 @@ export const server = {
         "</div>",
 
         // Fields — stacked
-        '<div style="padding:1.5rem 2rem; border-bottom:0.5px solid #d4d2cc; display:flex; flex-direction:column; gap:10px;">',
+        '<div style="padding:1.5rem 2rem; border-bottom:0.5px solid #d4d2cc;">',
         field("Name", `${nameEscaped} ${surnameEscaped}`),
         field("Email", emailEscaped, "#5c533f"),
         field("Phone", phoneEscaped ?? "Not provided"),
