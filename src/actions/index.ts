@@ -125,8 +125,11 @@ export const server = {
         `Add-ons: ${input.addons}`,
       ].join("\n");
 
-      const from = env.EMAIL_FROM ?? "noreply@mart-web.com";
-      const to = env.EMAIL_TO ?? "marek.sladek10@seznam.cz";
+      const from = env.EMAIL_FROM ?? "noreply@mauiroseevents.com";
+      const to = (env.EMAIL_TO ?? "mauiroseevents@gmail.com")
+        .split(",")
+        .map((e) => e.trim())
+        .filter(Boolean);
 
       const response = await fetch("https://api.mart-web.com/send", {
         method: "POST",
