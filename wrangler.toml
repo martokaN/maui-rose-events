@@ -5,7 +5,7 @@ compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
 
 [vars]
 EMAIL_FROM = "noreply@mart-web.com"
-EMAIL_TO = "marek.sladek10@seznam.cz"
+EMAIL_TO = "mauiroseevents@gmail.com"
 
 [assets]
 binding = "ASSETS"

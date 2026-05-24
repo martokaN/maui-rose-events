@@ -5,7 +5,10 @@ import cloudflare from "@astrojs/cloudflare";
 
 import svelte from "@astrojs/svelte";
 
+import sitemap from "@astrojs/sitemap";
+
 export default defineConfig({
+  site: "https://mauiroseevents.com",
   fonts: [
     {
       provider: fontProviders.google(),
@@ -22,7 +25,7 @@ export default defineConfig({
       styles: ["normal"],
     },
   ],
-  integrations: [icon(), svelte()],
+  integrations: [icon(), svelte(), sitemap()],
   adapter: cloudflare({
     imageService: "compile",
   }),
